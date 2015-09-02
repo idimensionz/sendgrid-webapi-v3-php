@@ -1,0 +1,18 @@
+{
+    "name": "idimensionz/sendgrid-webapi-v3",
+    "description": "PHP implementation of the SendGrid WebAPI v3",
+    "require": {
+        "guzzlehttp/guzzle": "5.3.x-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.6.*",
+        "codeclimate/php-test-reporter": "dev-master"
+    },
+    "license": "MIT license",
+    "authors": [
+        {
+            "name": "Jim Mullen",
+            "email": "info@idimensionz.com"
+        }
+    ]
+}
