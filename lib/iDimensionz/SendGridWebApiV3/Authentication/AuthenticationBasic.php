@@ -28,6 +28,8 @@
 
 namespace iDimensionz\SendGridWebApiV3\Authentication;
 
+use InvalidArgumentException;
+
 /**
  * Implements HTTP Basic authentication for a request
  * Class AuthenticationBasic
@@ -36,12 +38,79 @@ namespace iDimensionz\SendGridWebApiV3\Authentication;
 class AuthenticationBasic extends AuthenticationAbstract
 {
     /**
-     * @param string $userName
-     * @param string $password
+     * @var string $userName
      */
-    public function __construct($userName, $password)
+    private $userName;
+    /**
+     * @var string password
+     */
+    private $password;
+
+    /**
+     * @return string
+     */
+    private function getUserName()
     {
-        $this->setGuzzleOption([$userName, $password]);
+        return $this->userName;
+    }
+
+    /**
+     * @param string $userName
+     * @throws InvalidArgumentException
+     */
+    private function setUserName($userName)
+    {
+        if (!is_string($userName)) {
+            throw new InvalidArgumentException('Basic Authentication: User Name must be a string.');
+        }
+        $this->userName = $userName;
+    }
+
+    /**
+     * @return string
+     */
+    private function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @throws InvalidArgumentException
+     */
+    private function setPassword($password)
+    {
+        if (!is_string($password)) {
+            throw new InvalidArgumentException('Basic Authentication: Password must be a string.');
+        }
+        $this->password = $password;
+    }
+
+    /**
+     * @param array $authenticationData
+     * @throws InvalidArgumentException
+     */
+    public function setAuthentication($authenticationData)
+    {
+        if (!is_array($authenticationData) || 2 !== count($authenticationData)) {
+            throw new InvalidArgumentException(
+                'Basic Authentication: Authentication Data must be an array containing username and password'
+            );
+        }
+
+        if (array_key_exists('username', $authenticationData) && array_key_exists('password', $authenticationData)) {
+            $this->setUserName($authenticationData['username']);
+            $this->setPassword($authenticationData['password']);
+        } else {
+            $this->setUserName($authenticationData[0]);
+            $this->setPassword($authenticationData[1]);
+        }
+
+        $authenticationOption = [
+            $this->getUserName(),
+            $this->getPassword()
+        ];
+        $this->setOptions($authenticationOption);
     }
 }
  

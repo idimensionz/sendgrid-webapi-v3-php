@@ -26,16 +26,20 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace Tests\iDimensionz\SendGridWebApiV3\Authentication;
+
+use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
+use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationApiKey;
 
 class AuthenticationApiKeyTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstruct()
+    public function testSetAuthentication()
     {
         $validApiKey = 'a73jfmc93mc3ms';
         $expectedOption = ['auth' => AuthenticationApiKey::API_KEY_PREFIX . $validApiKey];
-        $actualAuthenticationApi = new AuthenticationApiKey($validApiKey);
-        $this->assertEquals($expectedOption, $actualAuthenticationApi->getGuzzleOption());
+        $authenticationApiKey = new AuthenticationApiKey(new AuthenticationOptionSetter());
+        $authenticationApiKey->setAuthentication($validApiKey);
+        $this->assertEquals($expectedOption, $authenticationApiKey->getOptions());
     }
 }
  

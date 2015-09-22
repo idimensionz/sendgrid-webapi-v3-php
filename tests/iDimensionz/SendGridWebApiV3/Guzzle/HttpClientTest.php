@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * AuthenticationDigest.php
+ * HttpClientTest.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,23 +26,17 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace Tests\iDimensionz\SendGridWebApiV3\Guzzle;
 
-/**
- * Implements HTTP Digest authentication for a request
- * Class AuthenticationDigest
- * @package iDimensionz\SendGridWebApiV3\Authentication
- */
-class AuthenticationDigest extends AuthenticationBasic
+use iDimensionz\SendGridWebApiV3\Guzzle\HttpClient;
+
+class HttpClientTest extends \PHPUnit_Framework_TestCase
 {
-    public function setAuthentication($authenticationData)
+    public function testConstruct()
     {
-        parent::setAuthentication($authenticationData);
-    }
-
-    public function setOptions($authenticationOption)
-    {
-        $authenticationOption[] = 'digest';
-        parent::setOptions($authenticationOption);
+        $instance = new HttpClient();
+        $this->assertInstanceOf('\GuzzleHttp\Client', $instance);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\HttpClientInterface', $instance);
     }
 }
+ 

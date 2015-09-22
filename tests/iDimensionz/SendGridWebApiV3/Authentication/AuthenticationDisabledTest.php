@@ -29,14 +29,15 @@
 namespace Tests\iDimensionz\SendGridWebApiV3\Authentication;
 
 use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationDisabled;
+use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
 
 class AuthenticationDisabledTest extends \PHPUnit_Framework_TestCase
 {
     public function testAuthenticationDisabled()
     {
-        $expectedOption = ['auth' => null];
-        $authentication = new AuthenticationDisabled();
-        $actualOption = $authentication->getGuzzleOption();
+        $expectedOption = [];
+        $authentication = new AuthenticationDisabled(new AuthenticationOptionSetter());
+        $actualOption = $authentication->getOptions();
         $this->assertEquals($expectedOption, $actualOption);
     }
 }

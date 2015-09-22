@@ -28,21 +28,54 @@
 
 namespace iDimensionz\SendGridWebApiV3\Authentication;
 
+use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
+use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationBasic;
+
 class AuthenticationBasicTest extends \PHPUnit_Framework_TestCase
 {
     private $validUserName;
     private $validPassword;
+    /**
+     * @var array $expectedAuthentication
+     */
+    private $expectedAuthentication;
+    /**
+     * @var AuthenticationBasic $authentication
+     */
+    private $authentication;
 
     public function setUp()
     {
+        parent::setUp();
         $this->validUserName = 'imauser';
         $this->validPassword = 'someValidPassword';
+        $this->expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword]];
+        $this->authentication = new AuthenticationBasic(new AuthenticationOptionSetter());
     }
-    public function testConstruct()
+
+    public function tearDown()
     {
-        $expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword]];
-        $actualAuthenticationBasic = new AuthenticationBasic($this->validUserName, $this->validPassword);
-        $this->assertEquals($expectedAuthentication, $actualAuthenticationBasic->getGuzzleOption());
+        unset($this->authentication);
+        unset($this->expectedAuthentication);
+        unset($this->validPassword);
+        unset($this->validUserName);
+        parent::tearDown();
+    }
+
+    public function testSetAuthenticationWithSequentialArray()
+    {
+        $this->authentication->setAuthentication([$this->validUserName, $this->validPassword]);
+        $this->assertEquals($this->expectedAuthentication, $this->authentication->getOptions());
+    }
+
+    public function testSetAuthenticationWithAssociativeArray()
+    {
+        $this->authentication->setAuthentication([
+            'username' => $this->validUserName,
+            'password' => $this->validPassword
+
+        ]);
+        $this->assertEquals($this->expectedAuthentication, $this->authentication->getOptions());
     }
 }
  

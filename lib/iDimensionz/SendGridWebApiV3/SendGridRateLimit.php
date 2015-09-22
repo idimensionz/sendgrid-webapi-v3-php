@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * Authentication.php
+ * SendGridRateLimit.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,38 +26,78 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace iDimensionz\SendGridWebApiV3;
 
-abstract class AuthenticationAbstract implements AuthenticationInterface
+use DateTime;
+
+class SendGridRateLimit
 {
     /**
-     * @var AuthenticationOptionSetterInterface $authenticationOptionSetter
+     * @var int $limit
      */
-    private $authenticationOptionSetter;
+    private $limit;
     /**
-     * @var string $options The options for the API authorization header
+     * @var int remaining
      */
-    protected $options;
+    private $remaining;
+    /**
+     * @var DateTime $resetDateTime
+     */
+    private $resetDateTime;
 
-    public function __construct(AuthenticationOptionSetterInterface $authenticationOptionSetter)
+    public function __construct($limit, $remaining, $resetTimestamp)
     {
-        $this->authenticationOptionSetter = $authenticationOptionSetter;
-        $this->options = [];
+        $this->setLimit($limit);
+        $this->setRemaining($remaining);
+        $this->setResetDateTime($resetTimestamp);
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getOptions()
+    public function getLimit()
     {
-        return $this->options;
+        return $this->limit;
     }
 
     /**
-     * @param mixed $option
+     * @param int $limit
      */
-    public function setOptions($option)
+    public function setLimit($limit)
     {
-        $this->options = $this->authenticationOptionSetter->addAuthenticationValue($this->options, $option);
+        $this->limit = (int) $limit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemaining()
+    {
+        return $this->remaining;
+    }
+
+    /**
+     * @param int $remaining
+     */
+    public function setRemaining($remaining)
+    {
+        $this->remaining = (int) $remaining;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getResetDateTime()
+    {
+        return $this->resetDateTime;
+    }
+
+    /**
+     * @param DateTime $resetDateTime
+     */
+    public function setResetDateTime($resetDateTime)
+    {
+        $this->resetDateTime = new DateTime($resetDateTime);
     }
 }
+ 

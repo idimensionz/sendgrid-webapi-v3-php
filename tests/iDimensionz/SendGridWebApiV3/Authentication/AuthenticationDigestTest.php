@@ -28,21 +28,52 @@
 
 namespace iDimensionz\SendGridWebApiV3\Authentication;
 
+use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
+
 class AuthenticationDigestTest extends \PHPUnit_Framework_TestCase
 {
     private $validUserName;
     private $validPassword;
+    /**
+     * @var array $expectedAuthentication
+     */
+    private $expectedAuthentication;
+    /**
+     * @var AuthenticationBasic $authentication
+     */
+    private $authentication;
 
     public function setUp()
     {
         $this->validUserName = 'imauser';
         $this->validPassword = 'someValidPassword';
+        $this->expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword, 'digest']];
+        $this->authentication = new AuthenticationDigest(new AuthenticationOptionSetter());
     }
-    public function testConstruct()
+
+    public function tearDown()
     {
-        $expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword, 'digest']];
-        $actualAuthenticationBasic = new AuthenticationDigest($this->validUserName, $this->validPassword);
-        $this->assertEquals($expectedAuthentication, $actualAuthenticationBasic->getGuzzleOption());
+        unset($this->authentication);
+        unset($this->expectedAuthentication);
+        unset($this->validPassword);
+        unset($this->validUserName);
+        parent::tearDown();
+    }
+
+    public function testSetAuthenticationWithSequentialArray()
+    {
+        $this->authentication->setAuthentication([$this->validUserName, $this->validPassword]);
+        $this->assertEquals($this->expectedAuthentication, $this->authentication->getOptions());
+    }
+
+    public function testSetAuthenticationWithAssociativeArray()
+    {
+        $this->authentication->setAuthentication([
+            'username' => $this->validUserName,
+            'password' => $this->validPassword
+
+        ]);
+        $this->assertEquals($this->expectedAuthentication, $this->authentication->getOptions());
     }
 }
  

@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * AuthenticationDigest.php
+ * HttpClientInterface.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,23 +26,29 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace iDimensionz\SendGridWebApiV3;
 
 /**
- * Implements HTTP Digest authentication for a request
- * Class AuthenticationDigest
- * @package iDimensionz\SendGridWebApiV3\Authentication
+ * Basic HTTP commands that any HTTP client must implement.
+ * Interface HttpClientInterface
+ * @package iDimensionz\SendGridWebApiV3
  */
-class AuthenticationDigest extends AuthenticationBasic
+interface HttpClientInterface
 {
-    public function setAuthentication($authenticationData)
-    {
-        parent::setAuthentication($authenticationData);
-    }
+    public function __construct(array $config = []);
 
-    public function setOptions($authenticationOption)
-    {
-        $authenticationOption[] = 'digest';
-        parent::setOptions($authenticationOption);
-    }
+    public function get($url = null, $options = []);
+
+    public function head($url = null, array $options = []);
+
+    public function delete($url = null, array $options = []);
+
+    public function put($url = null, array $options = []);
+
+    public function patch($url = null, array $options = []);
+
+    public function post($url = null, array $options = []);
+
+    public function options($url = null, array $options = []);
 }
+ 

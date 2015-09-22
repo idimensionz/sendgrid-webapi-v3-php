@@ -35,9 +35,9 @@ namespace iDimensionz\SendGridWebApiV3\Authentication;
  */
 class AuthenticationDisabled extends AuthenticationAbstract
 {
-    public function __construct()
+    public function setAuthentication($authenticationData)
     {
-        $this->setGuzzleOption(null);
+        $this->setOptions(null);
     }
 }
  

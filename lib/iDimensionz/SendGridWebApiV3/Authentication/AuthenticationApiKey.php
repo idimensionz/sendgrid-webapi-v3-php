@@ -37,9 +37,11 @@ class AuthenticationApiKey extends AuthenticationAbstract
 {
     const API_KEY_PREFIX = 'Bearer ';
 
-    public function __construct($apiKey)
+    /**
+     * @param string $apiKey
+     */
+    public function setAuthentication($apiKey)
     {
-        $this->setGuzzleOption(self::API_KEY_PREFIX . $apiKey);
+        $this->setOptions(self::API_KEY_PREFIX . $apiKey);
     }
 }
- 

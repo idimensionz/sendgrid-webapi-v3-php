@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * AuthenticationDigest.php
+ * AuthenticationGuzzleAbstract.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,23 +26,23 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace iDimensionz\SendGridWebApiV3\Guzzle;
 
-/**
- * Implements HTTP Digest authentication for a request
- * Class AuthenticationDigest
- * @package iDimensionz\SendGridWebApiV3\Authentication
- */
-class AuthenticationDigest extends AuthenticationBasic
+use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationOptionSetterInterface;
+
+class AuthenticationOptionSetter implements AuthenticationOptionSetterInterface
 {
-    public function setAuthentication($authenticationData)
+    /**
+     * Takes the request option array and adds the authentication value
+     * @param array $option
+     * @param mixed $authenticationValue
+     * @return array
+     */
+    public function addAuthenticationValue(array $option, $authenticationValue)
     {
-        parent::setAuthentication($authenticationData);
-    }
+        $option['auth'] = $authenticationValue;
 
-    public function setOptions($authenticationOption)
-    {
-        $authenticationOption[] = 'digest';
-        parent::setOptions($authenticationOption);
+        return $option;
     }
 }
+ 
