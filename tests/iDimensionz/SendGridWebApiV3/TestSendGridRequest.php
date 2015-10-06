@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * HttpClient.php
+ * TestSendGridRequest.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,29 +26,30 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Guzzle;
+namespace Tests\iDimensionz\SendGridWebApiV3;
 
-use GuzzleHttp\Client;
-use iDimensionz\SendGridWebApiV3\HttpClientInterface;
+use iDimensionz\SendGridWebApiV3\SendGridRequest;
 
-/**
- * A Guzzle specific implementation of the HttpClientInterface.
- * Class HttpClient
- * @package iDimensionz\SendGridWebApiV3
- */
-class HttpClient extends Client implements HttpClientInterface
+class TestSendGridRequest extends SendGridRequest
 {
-    public function __construct(array $config = [])
+    public function getAuthentication()
     {
-        parent::__construct($config);
+        return parent::getAuthentication();
     }
 
-    /**
-     * @param array $headers
-     */
-    public function setDefaultHeaders(array $headers)
+    public function getHttpClient()
     {
-        $this->setDefaultOption('headers', $headers);
+        return parent::getHttpClient();
+    }
+
+    public function assembleOptions($options)
+    {
+        return parent::assembleOptions($options);
+    }
+
+    public function getApiHost()
+    {
+        return parent::getApiHost();
     }
 }
  

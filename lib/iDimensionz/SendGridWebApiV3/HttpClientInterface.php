@@ -50,5 +50,10 @@ interface HttpClientInterface
     public function post($url = null, array $options = []);
 
     public function options($url = null, array $options = []);
+
+    /**
+     * @param array $headers
+     */
+    public function setDefaultHeaders(array $headers);
 }
  

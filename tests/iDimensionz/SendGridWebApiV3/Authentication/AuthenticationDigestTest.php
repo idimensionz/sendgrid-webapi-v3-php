@@ -26,9 +26,10 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace Tests\iDimensionz\SendGridWebApiV3\Authentication;
 
 use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
+use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationDigest;
 
 class AuthenticationDigestTest extends \PHPUnit_Framework_TestCase
 {

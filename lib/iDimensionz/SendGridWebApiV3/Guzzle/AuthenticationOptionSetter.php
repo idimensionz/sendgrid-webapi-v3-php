@@ -45,4 +45,3 @@ class AuthenticationOptionSetter implements AuthenticationOptionSetterInterface
         return $option;
     }
 }
- 

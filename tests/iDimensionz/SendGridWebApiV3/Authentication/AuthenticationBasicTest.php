@@ -26,7 +26,7 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Authentication;
+namespace Tests\iDimensionz\SendGridWebApiV3\Authentication;
 
 use iDimensionz\SendGridWebApiV3\Guzzle\AuthenticationOptionSetter;
 use iDimensionz\SendGridWebApiV3\Authentication\AuthenticationBasic;
