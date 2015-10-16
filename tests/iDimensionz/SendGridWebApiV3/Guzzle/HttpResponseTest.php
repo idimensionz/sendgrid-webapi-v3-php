@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * SendGridRateLimit.php
+ * HttpResponseTest.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,78 +26,53 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3;
+namespace Tests\iDimensionz\SendGridWebApiV3\Guzzle;
 
-use DateTime;
 
-class SendGridRateLimit
+use iDimensionz\SendGridWebApiV3\Guzzle\HttpResponse;
+
+class HttpResponseTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var int $limit
+     * @var HttpResponse $httpResponse
      */
-    private $limit;
+    private $httpResponse;
     /**
-     * @var int remaining
+     * @var int $validStatusCode
      */
-    private $remaining;
+    private $validStatusCode;
     /**
-     * @var DateTime $resetDateTime
+     * @var string $validBody
      */
-    private $resetDateTime;
+    private $validBody;
 
-    public function __construct($limit, $remaining, $resetTimestamp)
+    public function setUp()
     {
-        $this->setLimit($limit);
-        $this->setRemaining($remaining);
-        $this->setResetDateTime($resetTimestamp);
+        parent::setUp();
+        $this->validStatusCode = 200;
+        $this->validBody = json_encode(['some data', 2]);
+        $this->httpResponse = new HttpResponse($this->validStatusCode);
     }
 
-    /**
-     * @return int
-     */
-    public function getLimit()
+    public function tearDown()
     {
-        return $this->limit;
+        unset($this->httpResponse);
+        unset($this->validBody);
+        unset($this->validStatusCode);
+        parent::tearDown();
     }
 
-    /**
-     * @param int $limit
-     */
-    public function setLimit($limit)
+    public function testConstruct()
     {
-        $this->limit = (int) $limit;
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\HttpResponseInterface', $this->httpResponse);
+        $this->assertInstanceOf('GuzzleHttp\Message\Response', $this->httpResponse);
     }
 
-    /**
-     * @return int
-     */
-    public function getRemaining()
+    public function testBodySetterAndGetter()
     {
-        return $this->remaining;
-    }
-
-    /**
-     * @param int $remaining
-     */
-    public function setRemaining($remaining)
-    {
-        $this->remaining = (int) $remaining;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getResetDateTime()
-    {
-        return $this->resetDateTime;
-    }
-
-    /**
-     * @param int $resetDateTime    A timestamp representing the reset date/time.
-     */
-    public function setResetDateTime($resetDateTime)
-    {
-        $this->resetDateTime = (new DateTime())->setTimestamp($resetDateTime);
+        $this->httpResponse->setBodyContent($this->validBody);
+        $actualBody = $this->httpResponse->getBody();
+        $this->assertEquals($this->validBody, $actualBody);
     }
 }
  

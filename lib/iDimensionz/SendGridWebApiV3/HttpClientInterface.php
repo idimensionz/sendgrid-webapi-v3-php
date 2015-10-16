@@ -37,18 +37,53 @@ interface HttpClientInterface
 {
     public function __construct(array $config = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function get($url = null, $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function head($url = null, array $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function delete($url = null, array $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function put($url = null, array $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function patch($url = null, array $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function post($url = null, array $options = []);
 
+    /**
+     * @param null $url
+     * @param array $options
+     * @return HttpResponseInterface
+     */
     public function options($url = null, array $options = []);
 
     /**

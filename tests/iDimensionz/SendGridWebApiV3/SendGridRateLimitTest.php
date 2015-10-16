@@ -48,17 +48,24 @@ class SendGridRateLimitTest extends \PHPUnit_Framework_TestCase
      * @var string $validDateTimeString
      */
     private $validDateTimeString;
+    /**
+     * @var int $validTimestamp
+     */
+    private $validTimestamp;
 
     public function setUp()
     {
         parent::setUp();
         $this->validLimit = 100;
         $this->validRemaining = 25;
-        $this->validDateTimeString = '2015-09-21 22:57:30';
+        $dateTime = new \DateTime();
+        $this->validDateTimeString = $dateTime->format('Y-m-d H:i:s');
+        $this->validTimestamp = $dateTime->getTimestamp();
     }
 
     public function tearDown()
     {
+        unset($this->validTimestamp);
         unset($this->validDateTimeString);
         unset($this->validRemaining);
         unset($this->validLimit);
@@ -71,7 +78,7 @@ class SendGridRateLimitTest extends \PHPUnit_Framework_TestCase
         $this->sendGridRateLimit = new SendGridRateLimit(
             $this->validLimit,
             $this->validRemaining,
-            $this->validDateTimeString
+            $this->validTimestamp
         );
         $this->assertSendGridRateLimit();
     }
@@ -81,7 +88,7 @@ class SendGridRateLimitTest extends \PHPUnit_Framework_TestCase
         $this->sendGridRateLimit = new SendGridRateLimit(
             (string) $this->validLimit,
             (string) $this->validRemaining,
-            $this->validDateTimeString
+            $this->validTimestamp
         );
         $this->assertSendGridRateLimit();
     }
