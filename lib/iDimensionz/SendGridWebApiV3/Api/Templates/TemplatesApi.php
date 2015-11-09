@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * UserAccountUnitTest.php
+ * TemplatesApi.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,34 +26,33 @@
  * SOFTWARE.
 */
 
-namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
+namespace iDimensionz\SendGridWebApiV3\Api\Templates;
 
-use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
+use iDimensionz\SendGridWebApiV3\Api\SendGridApiEndpointAbstract;
 
-class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
+class TemplatesApi extends SendGridApiEndpointAbstract
 {
+    const ENDPOINT = 'templates';
+
     /**
-     * @var UserAccountDto $userAccount
+     * @return TemplateDto[]
      */
-    private $userAccount;
-
-    public function setUp()
+    public function getAll()
     {
-        parent::setUp();
-        $this->userAccount = new UserAccountDto(['type' => 'Free', 'reputation' => 96.9]);
+        $templatesData = json_decode($this->get(''), true);
+        foreach ($templatesData as $templateData) {
+            $templates[] = new TemplateDto($templateData);
+        }
+
+        return $templates;
     }
 
-    public function tearDown()
+    /**
+     * @todo Code this next
+     */
+    public function create()
     {
-        unset($this->userAccount);
-        parent::tearDown();
-    }
 
-    public function testConstruct()
-    {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserAccount', $this->userAccount);
-        $this->assertEquals('Free', $this->userAccount->getType());
-        $this->assertEquals(96.9, $this->userAccount->getReputation());
     }
 }
  

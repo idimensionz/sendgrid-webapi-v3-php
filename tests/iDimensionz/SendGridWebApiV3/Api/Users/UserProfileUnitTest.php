@@ -28,12 +28,12 @@
 
 namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
-use iDimensionz\SendGridWebApiV3\Api\Users\UserProfile;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
 class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var UserProfile $userProfile
+     * @var UserProfileDto $userProfile
      */
     private $userProfile;
     /**
@@ -56,7 +56,7 @@ class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
             'website'   =>  'http://communique.idimensionz.com',
             'zip'       =>  '12345-6789'
         ];
-        $this->userProfile = new UserProfile($this->expectedData);
+        $this->userProfile = new UserProfileDto($this->expectedData);
     }
 
     public function tearDown()

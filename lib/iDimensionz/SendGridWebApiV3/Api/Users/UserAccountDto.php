@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * UserApi.php
+ * UserAccount.php
  *  
  * The MIT License (MIT)
  * 
@@ -28,55 +28,56 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Users;
 
-use iDimensionz\SendGridWebApiV3\Api\SendGridApiEndpointAbstract;
-use iDimensionz\SendGridWebApiV3\SendGridRequest;
-
-class UserApi extends SendGridApiEndpointAbstract
+class UserAccountDto
 {
-    const ENDPOINT = 'user';
+    /**
+     * @var string $type    Free, Silver, etc.
+     */
+    private $type;
+    /**
+     * @var float $reputation
+     */
+    private $reputation;
 
     /**
-     * @param SendGridRequest $sendGridRequest
+     * @param array $account
      */
-    public function __construct(SendGridRequest $sendGridRequest)
+    public function __construct(array $account)
     {
-        parent::__construct($sendGridRequest, self::ENDPOINT);
+        $this->setType($account['type']);
+        $this->setReputation($account['reputation']);
     }
 
     /**
-     * @return UserProfileDto
+     * @return string
      */
-    public function getProfile()
+    public function getType()
     {
-        $profileContent = json_decode($this->get('profile'), true);
-        $userProfile = new UserProfileDto($profileContent);
-
-        return $userProfile;
+        return $this->type;
     }
 
     /**
-     * Updates the User Profile with any changed data (via setters).
-     * @param UserProfileDto $userProfile
-     * @return \iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto
+     * @param string $type
      */
-    public function updateProfile(UserProfileDto $userProfile)
+    public function setType($type)
     {
-        $changedFieldData = $userProfile->getUpdatedFields();
-        $profileContent = json_decode($this->patch('profile', $changedFieldData), true);
-        $userProfile = new UserProfileDto($profileContent);
-
-        return $userProfile;
+        $this->type = $type;
     }
 
     /**
-     * @return UserAccountDto
+     * @return float
      */
-    public function getAccount()
+    public function getReputation()
     {
-        $accountContent = json_decode($this->get('account'), true);
-        $userAccount = new UserAccountDto($accountContent);
+        return $this->reputation;
+    }
 
-        return $userAccount;
+    /**
+     * @param float $reputation
+     */
+    public function setReputation($reputation)
+    {
+        $this->reputation = (float) $reputation;
     }
 }
  

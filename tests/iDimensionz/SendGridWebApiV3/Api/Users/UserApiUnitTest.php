@@ -29,7 +29,7 @@
 namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
 use iDimensionz\SendGridWebApiV3\Api\Users\UserApi;
-use iDimensionz\SendGridWebApiV3\Api\Users\UserProfile;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
 class UserApiUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,13 +40,13 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
     private $sendGridRequest;
     private $sendGridResponse;
     /**
-     * @var UserProfile $validUserProfile
+     * @var UserProfileDto $validUserProfile
      */
     private $validUserProfile;
 
     public function setUp()
     {
-        $this->validUserProfile = new UserProfile(
+        $this->validUserProfile = new UserProfileDto(
             [
                 'first_name'    =>  'Ima',
                 'last_name'     =>  'Test',

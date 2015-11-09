@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * UserAccount.php
+ * SendGridEndpointAbstract.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,58 +26,12 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Api\Users;
+namespace iDimensionz\SendGridWebApiV3\Api;
 
-class UserAccount
+use iDimensionz\Api\ApiEndpointAbstract;
+
+class SendGridApiEndpointAbstract extends ApiEndpointAbstract
 {
-    /**
-     * @var string $type    Free, Silver, etc.
-     */
-    private $type;
-    /**
-     * @var float $reputation
-     */
-    private $reputation;
 
-    /**
-     * @param array $account
-     */
-    public function __construct(array $account)
-    {
-        $this->setType($account['type']);
-        $this->setReputation($account['reputation']);
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return float
-     */
-    public function getReputation()
-    {
-        return $this->reputation;
-    }
-
-    /**
-     * @param float $reputation
-     */
-    public function setReputation($reputation)
-    {
-        $this->reputation = (float) $reputation;
-    }
 }
  

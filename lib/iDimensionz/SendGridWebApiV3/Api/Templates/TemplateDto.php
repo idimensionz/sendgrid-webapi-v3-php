@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * UserAccountUnitTest.php
+ * TemplateDto.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,34 +26,77 @@
  * SOFTWARE.
 */
 
-namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
+namespace iDimensionz\SendGridWebApiV3\Api\Templates;
 
-use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
-
-class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
+class TemplateDto
 {
     /**
-     * @var UserAccountDto $userAccount
+     * @var string $id UUID
      */
-    private $userAccount;
+    private $id;
+    /**
+     * @var string $name
+     */
+    private $name;
 
-    public function setUp()
+    public function __construct($templateData)
     {
-        parent::setUp();
-        $this->userAccount = new UserAccountDto(['type' => 'Free', 'reputation' => 96.9]);
+        $this->setId($templateData['id']);
+        $this->setName($templateData['name']);
+        $versionsDto = new TemplateVersionDto($templateData['versions']);
+        $this->setVersions($versionsDto);
     }
 
-    public function tearDown()
+    /**
+     * @return string
+     */
+    public function getId()
     {
-        unset($this->userAccount);
-        parent::tearDown();
+        return $this->id;
     }
 
-    public function testConstruct()
+    /**
+     * @param string $id
+     */
+    public function setId($id)
     {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserAccount', $this->userAccount);
-        $this->assertEquals('Free', $this->userAccount->getType());
-        $this->assertEquals(96.9, $this->userAccount->getReputation());
+        $this->id = $id;
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return TemplateVersionDto[]
+     */
+    public function getVersions()
+    {
+        return $this->versions;
+    }
+
+    /**
+     * @param TemplateVersionDto[] $versions
+     */
+    public function setVersions($versions)
+    {
+        $this->versions = $versions;
+    }
+    /**
+     * @var TemplateVersionDto[] $versions
+     */
+    private $versions;
 }
  

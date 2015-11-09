@@ -41,6 +41,7 @@ abstract class ApiEndpointAbstract
     const HTTP_METHOD_HEAD = "HEAD";
     const HTTP_METHOD_OPTIONS = "OPTIONS";
 
+    //@todo Refactor out SendGrid specific references to make this abstract class more generic and reusable.
     /**
      * @var SendGridRequest $sendGridRequest
      */

@@ -28,7 +28,7 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Users;
 
-class UserProfile
+class UserProfileDto
 {
     /**
      * @var string $address
