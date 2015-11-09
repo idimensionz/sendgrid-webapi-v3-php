@@ -26,7 +26,7 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Api\User;
+namespace iDimensionz\SendGridWebApiV3\Api\Users;
 
 class UserProfile
 {

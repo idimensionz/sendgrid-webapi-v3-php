@@ -26,9 +26,9 @@
  * SOFTWARE.
 */
 
-namespace Tests\iDimensionz\SendGridWebApiV3\Api;
+namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
-use iDimensionz\SendGridWebApiV3\Api\User\UserProfile;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserProfile;
 
 class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -73,7 +73,7 @@ class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
 
     private function assertUserProfile()
     {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\User\UserProfile', $this->userProfile);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserProfile', $this->userProfile);
         $this->assertEquals($this->expectedData, $this->userProfile->toArray());
         $this->assertEquals($this->expectedData['address'], $this->userProfile->getAddress());
         $this->assertEquals($this->expectedData['city'], $this->userProfile->getCity());

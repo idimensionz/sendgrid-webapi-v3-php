@@ -26,10 +26,10 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Api;
+namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
-use iDimensionz\SendGridWebApiV3\Api\User\UserApi;
-use iDimensionz\SendGridWebApiV3\Api\User\UserProfile;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserApi;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserProfile;
 
 class UserApiUnitTest extends \PHPUnit_Framework_TestCase
 {

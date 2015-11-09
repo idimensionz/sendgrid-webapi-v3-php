@@ -26,9 +26,9 @@
  * SOFTWARE.
 */
 
-namespace Tests\iDimensionz\SendGridWebApiV3\Api;
+namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
-use iDimensionz\SendGridWebApiV3\Api\User\UserAccount;
+use iDimensionz\SendGridWebApiV3\Api\Users\UserAccount;
 
 class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,7 +51,7 @@ class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\User\UserAccount', $this->userAccount);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserAccount', $this->userAccount);
         $this->assertEquals('Free', $this->userAccount->getType());
         $this->assertEquals(96.9, $this->userAccount->getReputation());
     }
