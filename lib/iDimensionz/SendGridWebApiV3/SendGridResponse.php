@@ -55,8 +55,8 @@ class SendGridResponse
 
     public function __construct(HttpResponseInterface $httpResponse)
     {
-        $this->httpResponse = $httpResponse;
-        $headers = $httpResponse->getHeaders();
+        $this->setHttpResponse($httpResponse);
+        $headers = $this->getHttpResponse()->getHeaders();
         $this->rateLimit = new SendGridRateLimit(
             $headers[self::HEADER_RATELIMIT_LIMIT],
             $headers[self::HEADER_RATELIMIT_REMAINING],
@@ -111,6 +111,31 @@ class SendGridResponse
     public function getRateLimit()
     {
         return $this->rateLimit;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        $content = $this->isContentTypeJson() ? $this->getHttpResponse()->json() : $this->getHttpResponse()->getBody();
+
+        return $content;
+    }
+    /**
+     * @return HttpResponseInterface
+     */
+    protected function getHttpResponse()
+    {
+        return $this->httpResponse;
+    }
+
+    /**
+     * @param HttpResponseInterface $httpResponse
+     */
+    protected function setHttpResponse($httpResponse)
+    {
+        $this->httpResponse = $httpResponse;
     }
 }
  

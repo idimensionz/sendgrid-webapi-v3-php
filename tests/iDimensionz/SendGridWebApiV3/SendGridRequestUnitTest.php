@@ -48,6 +48,7 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
     private $apiHost;
     private $validContent;
     private $validAuthenticationOptions;
+    private $validResponse;
 
     public function setUp()
     {
@@ -58,10 +59,12 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
         $this->httpClient = \Phake::mock('\iDimensionz\SendGridWebApiV3\Guzzle\HttpClient');
         $this->sendGridRequest = new TestSendGridRequest($this->authentication, $this->apiHost, $this->httpClient);
         $this->validContent = 'Crazy good web stuff';
+        $this->validResponse = \Phake::mock('\iDimensionz\SendGridWebApiV3\Guzzle\HttpResponse');
     }
 
     public function tearDown()
     {
+        unset($this->validResponse);
         unset($this->validContent);
         unset($this->httpClient);
         unset($this->apiHost);
@@ -92,12 +95,12 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\HttpClientInterface', $actualHttpClient);
     }
 
-    public function testGetReturnsContent()
+    public function testGetReturnsHttpResponse()
     {
         $this->hasContent();
-        $validUrl = ('api/some-command/with/get/params');
-        $actualContent = $this->sendGridRequest->get($validUrl);
-        $this->assertEquals($this->validContent, $actualContent);
+        $validUrl = 'api/some-command/with/get/params';
+        $actualResponse = $this->sendGridRequest->get($validUrl);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\SendGridResponse', $actualResponse);
     }
 
     public function testSetHttpClientCreatesDefaultHttpClientWhenNullSupplied()
@@ -129,10 +132,10 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
     private function hasContent()
     {
         \Phake::when($this->httpClient)->get(\Phake::anyParameters())
-            ->thenReturn($this->validContent);
+            ->thenReturn($this->validResponse);
         $this->sendGridRequest->setHttpClient($this->httpClient);
-        $actualContent = $this->httpClient->get($this->apiHost.'some-command/with/params');
-        $this->assertEquals($this->validContent, $actualContent);
+        $actualResponse = $this->httpClient->get($this->apiHost.'api/some-command/with/get/params');
+        $this->assertEquals($this->validResponse, $actualResponse);
     }
 
     /**

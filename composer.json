@@ -13,7 +13,9 @@
     "autoload": {
         "psr-0": {
             "iDimensionz\\SendGridWebApiV3\\": "lib/",
-            "Tests\\iDimensionz\\SendGridWebApiV3\\": "tests/"
+            "Tests\\iDimensionz\\SendGridWebApiV3\\": "tests/",
+            "iDimensionz\\Api\\": "lib/",
+            "Tests\\iDimensionz\\Api\\": "tests/"
         }
     },
     "authors": [

@@ -123,6 +123,7 @@ class SendGridResponseTest extends \PHPUnit_Framework_TestCase
         $actualErrorMessage = $this->sendGridResponse->getErrorMessage($validError);
         $this->assertEquals($validError['message'], $actualErrorMessage);
     }
+
     public function testGetPaginationLinksReturnsValidData()
     {
         $this->hasHttpResponse();

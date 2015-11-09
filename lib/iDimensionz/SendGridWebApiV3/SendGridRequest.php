@@ -69,14 +69,29 @@ class SendGridRequest
     /**
      * @param string $url
      * @param array $options
-     * @return string
+     * @return SendGridResponse
      */
     public function get($url = null, $options = [])
     {
         $options = $this->assembleOptions($options);
-        $content = $this->getHttpClient()->get($url, $options);
+        $httpResponse = $this->getHttpClient()->get($url, $options);
+        $sendGridResponse = new SendGridResponse($httpResponse);
 
-        return $content;
+        return $sendGridResponse;
+    }
+
+    /**
+     * @param null $url
+     * @param array $options
+     * @return \iDimensionz\SendGridWebApiV3\SendGridResponse
+     */
+    public function patch($url = null, $options = [])
+    {
+        $options = $this->assembleOptions($options);
+        $httpResponse = $this->getHttpClient()->patch($url, $options);
+        $sendGridResponse = new SendGridResponse($httpResponse);
+
+        return $sendGridResponse;
     }
 
     /**
