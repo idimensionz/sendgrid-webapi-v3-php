@@ -30,7 +30,7 @@ namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
 use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
-class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
+class UserProfileDtoUnitTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var UserProfileDto $userProfile
@@ -73,7 +73,7 @@ class UserProfileUnitTest extends \PHPUnit_Framework_TestCase
 
     private function assertUserProfile()
     {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserProfile', $this->userProfile);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto', $this->userProfile);
         $this->assertEquals($this->expectedData, $this->userProfile->toArray());
         $this->assertEquals($this->expectedData['address'], $this->userProfile->getAddress());
         $this->assertEquals($this->expectedData['city'], $this->userProfile->getCity());

@@ -30,7 +30,7 @@ namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
 use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
 
-class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
+class UserAccountDtoUnitTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var UserAccountDto $userAccount
@@ -51,7 +51,7 @@ class UserAccountUnitTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserAccount', $this->userAccount);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto', $this->userAccount);
         $this->assertEquals('Free', $this->userAccount->getType());
         $this->assertEquals(96.9, $this->userAccount->getReputation());
     }
