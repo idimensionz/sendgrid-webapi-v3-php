@@ -28,7 +28,9 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Templates;
 
-class TemplateVersionDto
+use iDimensionz\Api\DtoInterface;
+
+class TemplateVersionDto implements DtoInterface
 {
     /**
      * @var string $id UUID
@@ -140,6 +142,21 @@ class TemplateVersionDto
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $output = [];
+        $output['id'] = $this->getId();
+        $output['template_id'] = $this->getTemplateId();
+        $output['active'] = $this->isActive();
+        $output['name'] = $this->getName();
+        $output['updated_at'] = $this->getUpdatedAt()->format('Y-m-d H:i:s');
+
+        return $output;
     }
 }
  

@@ -28,7 +28,9 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Templates;
 
-class TemplateDto
+use iDimensionz\Api\DtoInterface;
+
+class TemplateDto implements DtoInterface
 {
     /**
      * @var string $id UUID
@@ -38,13 +40,21 @@ class TemplateDto
      * @var string $name
      */
     private $name;
+    /**
+     * @var TemplateVersionDto[] $versions
+     */
+    private $versions;
 
     public function __construct($templateData)
     {
         $this->setId($templateData['id']);
         $this->setName($templateData['name']);
-        $versionsDto = new TemplateVersionDto($templateData['versions']);
-        $this->setVersions($versionsDto);
+        $versionsData = $templateData['versions'];
+        $versionsDtos = [];
+        foreach ($versionsData as $versionData) {
+            $versionsDtos[] = new TemplateVersionDto($versionData);
+        }
+        $this->setVersions($versionsDtos);
     }
 
     /**
@@ -94,9 +104,23 @@ class TemplateDto
     {
         $this->versions = $versions;
     }
+
     /**
-     * @var TemplateVersionDto[] $versions
+     * @return array
      */
-    private $versions;
+    public function toArray()
+    {
+        $output = [];
+        $output['id'] = $this->getId();
+        $output['name'] = $this->getName();
+        $versionDtos = $this->getVersions();
+        $versionOutput = [];
+        foreach ($versionDtos as $versionDto) {
+            $versionOutput[] = $versionDto->toArray();
+        }
+        $output['versions'] = $versionOutput;
+
+        return $output;
+    }
 }
  
