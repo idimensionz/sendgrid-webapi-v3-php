@@ -28,6 +28,7 @@
 
 namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
+use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserApi;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
@@ -40,13 +41,17 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
     private $sendGridRequest;
     private $sendGridResponse;
     /**
-     * @var UserProfileDto $validUserProfile
+     * @var UserProfileDto $validUserProfileDto
      */
-    private $validUserProfile;
+    private $validUserProfileDto;
+    /**
+     * @var UserAccountDto $validUserAccountDto
+     */
+    private $validUserAccountDto;
 
     public function setUp()
     {
-        $this->validUserProfile = new UserProfileDto(
+        $this->validUserProfileDto = new UserProfileDto(
             [
                 'first_name'    =>  'Ima',
                 'last_name'     =>  'Test',
@@ -60,41 +65,59 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
                 'phone'         =>  '484-455-4WEB'
             ]
         );
+        $this->validUserAccountDto = new UserAccountDto(
+            [
+                'type'          => 'free',
+                'reputation'    =>  99.7
+            ]
+        );
         parent::setUp();
     }
 
     public function tearDown()
     {
-        unset($this->validUserProfile);
+        unset($this->validUserAccountDto);
+        unset($this->validUserProfileDto);
         unset($this->userApi);
         unset($this->sendGridRequest);
         parent::tearDown();
     }
 
-    public function testGetProfileReturnsUserProfile()
+    public function testGetProfileReturnsUserProfileDto()
     {
-        $this->hasSendGridGetRequest('profile');
+        $this->hasSendGridGetRequest('profile', $this->validUserProfileDto);
         $actualUserProfile = $this->userApi->getProfile();
-        $this->assertEquals($this->validUserProfile, $actualUserProfile);
+        $this->assertEquals($this->validUserProfileDto, $actualUserProfile);
     }
 
     public function testUpdateProfile()
     {
-        $this->validUserProfile->setFirstName('Shesa');
-        $this->validUserProfile->setLastName('Nuthertest');
-        $this->hasSendGridPatchRequest('profile', $this->validUserProfile->getUpdatedFields());
-        $actualUserProfile = $this->userApi->updateProfile($this->validUserProfile);
+        $this->validUserProfileDto->setFirstName('Shesa');
+        $this->validUserProfileDto->setLastName('Nuthertest');
+        $this->hasSendGridPatchRequest('profile', $this->validUserProfileDto->getUpdatedFields());
+        $actualUserProfileDto = $this->userApi->updateProfile($this->validUserProfileDto);
         // Unset the updated fields since the result profile won't have modified fields
-        $this->validUserProfile->setUpdatedFields([]);
-        $this->assertEquals($this->validUserProfile, $actualUserProfile);
+        $this->validUserProfileDto->setUpdatedFields([]);
+        $this->assertEquals($this->validUserProfileDto, $actualUserProfileDto);
     }
 
-    private function hasSendGridGetRequest($command)
+    public function testGetAccountReturnUserAccountDto()
+    {
+        $this->hasSendGridGetRequest('account', $this->validUserAccountDto);
+        $actualUserAccountDto = $this->userApi->getAccount();
+        $this->assertEquals($this->validUserAccountDto, $actualUserAccountDto);
+    }
+
+    /**
+     * @param string $command
+     * @param $dto
+     */
+    private function hasSendGridGetRequest($command, $dto)
     {
         $this->hasSendGridRequest();
         $this->hasSendGridResponse();
         \Phake::when($this->sendGridResponse)->getContent()
-            ->thenReturn(json_encode($this->validUserProfile->toArray()));
+            ->thenReturn(json_encode($dto->toArray()));
         \Phake::when($this->sendGridRequest)->get(UserApi::ENDPOINT . '/' . $command)
             ->thenReturn($this->sendGridResponse);
         $this->userApi = new UserApi($this->sendGridRequest);
@@ -105,8 +128,8 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
         $this->hasSendGridRequest();
         $this->hasSendGridResponse();
         \Phake::when($this->sendGridResponse)->getContent()
-            ->thenReturn(json_encode($this->validUserProfile->toArray()));
-        $this->assertEquals(json_encode($this->validUserProfile->toArray()), $this->sendGridResponse->getContent());
+            ->thenReturn(json_encode($this->validUserProfileDto->toArray()));
+        $this->assertEquals(json_encode($this->validUserProfileDto->toArray()), $this->sendGridResponse->getContent());
         \Phake::when($this->sendGridRequest)->patch(UserApi::ENDPOINT . '/' . $command, ['body' => $data])
             ->thenReturn($this->sendGridResponse);
         $this->userApi = new UserApi($this->sendGridRequest);

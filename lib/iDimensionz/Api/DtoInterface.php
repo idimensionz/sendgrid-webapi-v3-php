@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * UserAccount.php
+ * DtoInterface.php
  *  
  * The MIT License (MIT)
  * 
@@ -26,72 +26,14 @@
  * SOFTWARE.
 */
 
-namespace iDimensionz\SendGridWebApiV3\Api\Users;
+namespace iDimensionz\Api;
 
-use iDimensionz\Api\DtoInterface;
 
-class UserAccountDto implements DtoInterface
+interface DtoInterface
 {
-    /**
-     * @var string $type    Free, Silver, etc.
-     */
-    private $type;
-    /**
-     * @var float $reputation
-     */
-    private $reputation;
-
-    /**
-     * @param array $account
-     */
-    public function __construct(array $account)
-    {
-        $this->setType($account['type']);
-        $this->setReputation($account['reputation']);
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return float
-     */
-    public function getReputation()
-    {
-        return $this->reputation;
-    }
-
-    /**
-     * @param float $reputation
-     */
-    public function setReputation($reputation)
-    {
-        $this->reputation = (float) $reputation;
-    }
-
     /**
      * @return array
      */
-    public function toArray()
-    {
-        $output = [];
-        $output['type'] = $this->getType();
-        $output['reputation'] = $this->getReputation();
-
-        return $output;
-    }
+    public function toArray();
 }
  
