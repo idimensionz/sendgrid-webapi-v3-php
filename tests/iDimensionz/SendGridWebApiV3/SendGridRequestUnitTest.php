@@ -97,9 +97,17 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReturnsHttpResponse()
     {
-        $this->hasContent();
+        $this->hasGetContent();
         $validUrl = 'api/some-command/with/get/params';
         $actualResponse = $this->sendGridRequest->get($validUrl);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\SendGridResponse', $actualResponse);
+    }
+
+    public function testPatchReturnsHttpResponse()
+    {
+        $this->hasPatchContent();
+        $validUrl = 'api/some-command';
+        $actualResponse = $this->sendGridRequest->patch($validUrl);
         $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\SendGridResponse', $actualResponse);
     }
 
@@ -129,12 +137,21 @@ class SendGridRequestUnitTest extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    private function hasContent()
+    private function hasGetContent()
     {
         \Phake::when($this->httpClient)->get(\Phake::anyParameters())
             ->thenReturn($this->validResponse);
         $this->sendGridRequest->setHttpClient($this->httpClient);
         $actualResponse = $this->httpClient->get($this->apiHost.'api/some-command/with/get/params');
+        $this->assertEquals($this->validResponse, $actualResponse);
+    }
+
+    private function hasPatchContent()
+    {
+        \Phake::when($this->httpClient)->patch(\Phake::anyParameters())
+            ->thenReturn($this->validResponse);
+        $this->sendGridRequest->setHttpClient($this->httpClient);
+        $actualResponse = $this->httpClient->patch($this->apiHost.'api/some-command');
         $this->assertEquals($this->validResponse, $actualResponse);
     }
 

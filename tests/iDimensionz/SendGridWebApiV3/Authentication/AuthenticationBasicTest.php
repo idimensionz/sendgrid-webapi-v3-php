@@ -77,5 +77,45 @@ class AuthenticationBasicTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->assertEquals($this->expectedAuthentication, $this->authentication->getOptions());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetAuthenticationThrowsExceptionWhenDataNotArray()
+    {
+        $this->authentication->setAuthentication('invalid data');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetAuthenticationThrowsExceptionWhenDataIsArrayWithLessThanTwoElements()
+    {
+        $this->authentication->setAuthentication(['username'=>'imauser']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetAuthenticationThrowsExceptionWhenDataIsArrayWithMoreThanTwoElements()
+    {
+        $this->authentication->setAuthentication(['imauser', 'somepassword', 'something else']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetUserNameThrowsExceptionWhenUserNameIsNotAString()
+    {
+        $this->authentication->setAuthentication(['username' => 1, 'password' => 'somepassword']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetPasswordThrowsExceptionWhenPasswordIsNotAString()
+    {
+        $this->authentication->setAuthentication(['username' => 'imauser', 'password' => 1234]);
+    }
 }
  
