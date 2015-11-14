@@ -45,9 +45,21 @@ class TemplateVersionDto implements DtoInterface
      */
     private $active;
     /**
-     * @var string $name
+     * @var string $name Maximum 100 characters
      */
     private $name;
+    /**
+     * @var string <%subject%> tag must be present
+     */
+    private $subject;
+    /**
+     * @var string <%body%> tag must be inside the content. Maximum of 1048576 bytes allowed for html content.
+     */
+    private $htmlContent;
+    /**
+     * @var string <%body%> tag must be inside the content. Maximum of 1048576 bytes allowed for plain content.
+     */
+    private $plainContent;
     /**
      * @var \DateTime
      */
@@ -145,6 +157,54 @@ class TemplateVersionDto implements DtoInterface
     }
 
     /**
+     * @return string
+     */
+    public function getHtmlContent()
+    {
+        return $this->htmlContent;
+    }
+
+    /**
+     * @param string $htmlContent
+     */
+    public function setHtmlContent($htmlContent)
+    {
+        $this->htmlContent = $htmlContent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainContent()
+    {
+        return $this->plainContent;
+    }
+
+    /**
+     * @param string $plainContent
+     */
+    public function setPlainContent($plainContent)
+    {
+        $this->plainContent = $plainContent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -154,6 +214,9 @@ class TemplateVersionDto implements DtoInterface
         $output['template_id'] = $this->getTemplateId();
         $output['active'] = $this->isActive();
         $output['name'] = $this->getName();
+        $output['html_content'] = $this->getHtmlContent();
+        $output['plain_content'] = $this->getPlainContent();
+        $output['subject'] = $this->getSubject();
         $output['updated_at'] = $this->getUpdatedAt()->format('Y-m-d H:i:s');
 
         return $output;

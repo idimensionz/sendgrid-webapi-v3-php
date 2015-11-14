@@ -37,7 +37,7 @@ class TemplateDto implements DtoInterface
      */
     private $id;
     /**
-     * @var string $name
+     * @var string $name Maximum of 100 characters
      */
     private $name;
     /**
@@ -45,6 +45,9 @@ class TemplateDto implements DtoInterface
      */
     private $versions;
 
+    /**
+     * @param array $templateData
+     */
     public function __construct($templateData)
     {
         $this->setId($templateData['id']);
@@ -86,6 +89,9 @@ class TemplateDto implements DtoInterface
      */
     public function setName($name)
     {
+        if (100 < strlen($name)) {
+            throw new \InvalidArgumentException('Template name must be 100 characters or less');
+        }
         $this->name = $name;
     }
 
@@ -98,11 +104,19 @@ class TemplateDto implements DtoInterface
     }
 
     /**
-     * @param TemplateVersionDto[] $versions
+     * @param TemplateVersionDto[] $templateVersionDtos
      */
-    public function setVersions($versions)
+    public function setVersions($templateVersionDtos)
     {
-        $this->versions = $versions;
+        if (!is_array($templateVersionDtos)) {
+            throw new \InvalidArgumentException("Versions must be an array of TemplateVersionDto objects");
+        }
+        foreach ($templateVersionDtos as $templateVersionDto) {
+            if (! $templateVersionDto instanceof TemplateVersionDto) {
+                throw new \InvalidArgumentException("Versions must be an array of TemplateVersionDto objects");
+            }
+        }
+        $this->versions = $templateVersionDtos;
     }
 
     /**
