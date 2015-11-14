@@ -49,13 +49,29 @@ class TemplateDtoUnitTest extends \PHPUnit_Framework_TestCase
      * @var TemplateVersionDto[]
      */
     private $validVersions;
+    /**
+     * @var TemplateVersionDto
+     */
+    private $validVersion;
 
     public function setUp()
     {
         parent::setUp();
         $this->validId = '733ba07f-ead1-41fc-933a-3976baa23716';
         $this->validName = 'This is a valid template name';
-        $this->validVersions = [];
+        $this->validVersion = new TemplateVersionDto([
+            'id'            =>  $this->validId,
+            'template_id'   =>  'e3a61852-1acb-4b32-a1bc-b44b3814ab78',
+            'active'        =>  1,
+            'name'          =>  $this->validName,
+            'html_content'  =>  '<%body%>',
+            'plain_content' =>  '<%body%>',
+            'subject'       =>  '<%subject%>',
+            'updated_at'    =>  '2015-11-14 10:45:00'
+        ]);
+        $this->validVersions = [
+            $this->validVersion->toArray()
+        ];
 
         $this->hasTemplateDto();
     }
@@ -64,6 +80,7 @@ class TemplateDtoUnitTest extends \PHPUnit_Framework_TestCase
     {
         unset($this->validId);
         unset($this->validName);
+        unset($this->validVersion);
         unset($this->validVersions);
         unset($this->templateDto);
         parent::tearDown();
@@ -119,7 +136,7 @@ class TemplateDtoUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Templates\TemplateDto', $this->templateDto);
         $this->assertEquals($this->validId, $this->templateDto->getId());
         $this->assertEquals($this->validName, $this->templateDto->getName());
-        $this->assertEquals($this->validVersions, $this->templateDto->getVersions());
+        $this->assertEquals($this->validVersion, $this->templateDto->getVersions()[0]);
     }
 
     private function hasTemplateDto()
