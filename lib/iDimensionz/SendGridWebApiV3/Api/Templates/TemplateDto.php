@@ -50,6 +50,7 @@ class TemplateDto implements DtoInterface
      */
     public function __construct($templateData)
     {
+        $this->validateTemplateData($templateData);
         $this->setId($templateData['id']);
         $this->setName($templateData['name']);
         $versionsData = $templateData['versions'];
@@ -89,6 +90,7 @@ class TemplateDto implements DtoInterface
      */
     public function setName($name)
     {
+        // Name must be 100 characters or less
         if (100 < strlen($name)) {
             throw new \InvalidArgumentException('Template name must be 100 characters or less');
         }
@@ -135,6 +137,26 @@ class TemplateDto implements DtoInterface
         $output['versions'] = $versionOutput;
 
         return $output;
+    }
+
+    /**
+     * @param array $templateData
+     */
+    private function validateTemplateData($templateData)
+    {
+        $isValid = is_array($templateData);
+        if ($isValid) {
+            $keys = array_keys($templateData);
+            $isValid = $isValid &&
+                in_array('id', $keys) &&
+                in_array('name', $keys) &&
+                in_array('versions', $keys) &&
+                is_array($templateData['versions']);
+        }
+
+        if (!$isValid) {
+            throw new \InvalidArgumentException('Template data must be an array and contain the valid keys');
+        }
     }
 }
  

@@ -86,6 +86,46 @@ class TemplateDtoUnitTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructThrowsExceptionWhenDataDoesNotContainId()
+    {
+        $templateData = $this->hasTemplateData();
+        unset($templateData['id']);
+        $this->hasTemplateDto($templateData);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructThrowsExceptionWhenDataDoesNotContainName()
+    {
+        $templateData = $this->hasTemplateData();
+        unset($templateData['name']);
+        $this->hasTemplateDto($templateData);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructThrowsExceptionWhenDataDoesNotContainVersions()
+    {
+        $templateData = $this->hasTemplateData();
+        unset($templateData['versions']);
+        $this->hasTemplateDto($templateData);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructThrowsExceptionWhenVersionsIsNotAnArray()
+    {
+        $templateData = $this->hasTemplateData();
+        $templateData['versions'] = 'This is not an array';
+        $this->hasTemplateDto($templateData);
+    }
+
     public function testConstructReturnsInstanceOfTemplateDto()
     {
         $this->assertTemplateDto();
@@ -139,13 +179,27 @@ class TemplateDtoUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->validVersion, $this->templateDto->getVersions()[0]);
     }
 
-    private function hasTemplateDto()
+    /**
+     * @param array|null $templateData
+     */
+    private function hasTemplateDto($templateData = null)
+    {
+        if (is_null($templateData)) {
+            $templateData = $this->hasTemplateData();
+        }
+        $this->templateDto = new TemplateDto($templateData);
+    }
+
+    /**
+     * @return array
+     */
+    private function hasTemplateData()
     {
         $templateData = [];
         $templateData['id'] = $this->validId;
         $templateData['name'] = $this->validName;
         $templateData['versions'] = $this->validVersions;
-        $this->templateDto = new TemplateDto($templateData);
+        return $templateData;
     }
 }
  
