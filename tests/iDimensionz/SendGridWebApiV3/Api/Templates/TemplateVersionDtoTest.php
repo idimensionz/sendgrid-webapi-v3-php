@@ -185,9 +185,10 @@ class TemplateVersionDtoTest extends \PHPUnit_Framework_TestCase
     {
         $invalidContent = 'a';
         // Build a string that's too long
-        for ($loop = 0; $loop < TemplateVersionDto::MAX_LENGTH_HTML_CONTENT; $loop++) {
+        for ($loop = 0; $loop <= TemplateVersionDto::MAX_LENGTH_HTML_CONTENT; $loop++) {
             $invalidContent .= 'a';
         }
+        $this->assertGreaterThan(TemplateVersionDto::MAX_LENGTH_HTML_CONTENT, strlen($invalidContent));
         $this->hasTemplateVersionDto();
         $this->templateVersionDto->setHtmlContent($invalidContent);
     }
@@ -209,9 +210,10 @@ class TemplateVersionDtoTest extends \PHPUnit_Framework_TestCase
     {
         $invalidContent = 'a';
         // Build a string that's too long
-        for ($loop = 0; $loop < TemplateVersionDto::MAX_LENGTH_HTML_CONTENT; $loop++) {
+        for ($loop = 0; $loop <= TemplateVersionDto::MAX_LENGTH_PLAIN_CONTENT; $loop++) {
             $invalidContent .= 'a';
         }
+        $this->assertGreaterThan(TemplateVersionDto::MAX_LENGTH_PLAIN_CONTENT, strlen($invalidContent));
         $this->hasTemplateVersionDto();
         $this->templateVersionDto->setPlainContent($invalidContent);
     }
