@@ -32,6 +32,8 @@ use iDimensionz\Api\DtoInterface;
 
 class TemplateDto implements DtoInterface
 {
+    const MAX_LENGTH_NAME = 100;
+
     /**
      * @var string $id UUID
      */

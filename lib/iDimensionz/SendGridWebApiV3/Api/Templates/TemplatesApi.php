@@ -29,17 +29,29 @@
 namespace iDimensionz\SendGridWebApiV3\Api\Templates;
 
 use iDimensionz\SendGridWebApiV3\Api\SendGridApiEndpointAbstract;
+use iDimensionz\SendGridWebApiV3\SendGridRequest;
 
 class TemplatesApi extends SendGridApiEndpointAbstract
 {
     const ENDPOINT = 'templates';
 
     /**
+     * @param SendGridRequest $sendGridRequest
+     */
+    public function __construct(SendGridRequest $sendGridRequest)
+    {
+        parent::__construct($sendGridRequest, self::ENDPOINT);
+    }
+
+    /**
      * @return TemplateDto[]
+     * @see https://sendgrid.com/docs/API_Reference/Web_API_v3/Template_Engine/templates.html#-GET
      */
     public function getAll()
     {
-        $templatesData = json_decode($this->get(''), true);
+        $result = json_decode($this->get(''), true);
+        $templatesData = $result['templates'];
+        $templates = [];
         foreach ($templatesData as $templateData) {
             $templates[] = new TemplateDto($templateData);
         }
@@ -48,11 +60,20 @@ class TemplatesApi extends SendGridApiEndpointAbstract
     }
 
     /**
-     * @todo Code this next
+     * @param $name
+     * @return TemplateDto
+     * @throws \InvalidArgumentException
      */
-    public function create()
+    public function create($name)
     {
+        if (TemplateDto::MAX_LENGTH_NAME < $name) {
+            throw new \InvalidArgumentException('Name must be ' . TemplateDto::MAX_LENGTH_NAME . ' characters or less');
+        }
+        $options = ['name'  =>  $name];
+        $templateData = json_decode($this->post('', $options), true);
+        $template = new TemplateDto($templateData);
 
+        return $template;
     }
 }
  

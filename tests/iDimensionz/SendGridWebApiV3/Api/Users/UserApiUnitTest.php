@@ -28,18 +28,19 @@
 
 namespace Tests\iDimensionz\SendGridWebApiV3\Api\Users;
 
+use Tests\iDimensionz\SendGridWebApiV3\Api\ApiUnitTestAbstract;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserApi;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
-class UserApiUnitTest extends \PHPUnit_Framework_TestCase
+require_once '../ApiUnitTestAbstract.php';
+
+class UserApiUnitTest extends ApiUnitTestAbstract
 {
     /**
      * @var UserApi $userApi
      */
     private $userApi;
-    private $sendGridRequest;
-    private $sendGridResponse;
     /**
      * @var UserProfileDto $validUserProfileDto
      */
@@ -51,27 +52,28 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        parent::setUp();
+        $this->setEndPoint(UserApi::ENDPOINT);
         $this->validUserProfileDto = new UserProfileDto(
             [
-                'first_name'    =>  'Ima',
-                'last_name'     =>  'Test',
-                'address'       =>  '123 Main Street',
-                'city'          =>  'Whoville',
-                'state'         =>  'PA',
-                'zip'           =>  '12345-6789',
-                'country'       =>  'USA',
-                'website'       =>  'http://communique.idimensionz.com',
-                'company'       =>  'iDimensionz',
-                'phone'         =>  '484-455-4WEB'
+                'first_name' => 'Ima',
+                'last_name' => 'Test',
+                'address' => '123 Main Street',
+                'city' => 'Whoville',
+                'state' => 'PA',
+                'zip' => '12345-6789',
+                'country' => 'USA',
+                'website' => 'http://communique.idimensionz.com',
+                'company' => 'iDimensionz',
+                'phone' => '484-455-4WEB'
             ]
         );
         $this->validUserAccountDto = new UserAccountDto(
             [
-                'type'          => 'free',
-                'reputation'    =>  99.7
+                'type' => 'free',
+                'reputation' => 99.7
             ]
         );
-        parent::setUp();
     }
 
     public function tearDown()
@@ -79,13 +81,12 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
         unset($this->validUserAccountDto);
         unset($this->validUserProfileDto);
         unset($this->userApi);
-        unset($this->sendGridRequest);
         parent::tearDown();
     }
 
     public function testGetProfileReturnsUserProfileDto()
     {
-        $this->hasSendGridGetRequest('profile', $this->validUserProfileDto);
+        $this->hasSendGridGetRequest('profile', json_encode($this->validUserProfileDto->toArray()));
         $actualUserProfile = $this->userApi->getProfile();
         $this->assertEquals($this->validUserProfileDto, $actualUserProfile);
     }
@@ -94,7 +95,7 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
     {
         $this->validUserProfileDto->setFirstName('Shesa');
         $this->validUserProfileDto->setLastName('Nuthertest');
-        $this->hasSendGridPatchRequest('profile', $this->validUserProfileDto->getUpdatedFields());
+        $this->hasSendGridPatchRequest('profile', json_encode($this->validUserProfileDto->toArray()), $this->validUserProfileDto->getUpdatedFields());
         $actualUserProfileDto = $this->userApi->updateProfile($this->validUserProfileDto);
         // Unset the updated fields since the result profile won't have modified fields
         $this->validUserProfileDto->setUpdatedFields([]);
@@ -103,46 +104,29 @@ class UserApiUnitTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAccountReturnUserAccountDto()
     {
-        $this->hasSendGridGetRequest('account', $this->validUserAccountDto);
+        $this->hasSendGridGetRequest('account', json_encode($this->validUserAccountDto->toArray()));
         $actualUserAccountDto = $this->userApi->getAccount();
         $this->assertEquals($this->validUserAccountDto, $actualUserAccountDto);
     }
 
     /**
      * @param string $command
-     * @param $dto
+     * @param $content
      */
-    private function hasSendGridGetRequest($command, $dto)
+    protected function hasSendGridGetRequest($command, $content)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
-        \Phake::when($this->sendGridResponse)->getContent()
-            ->thenReturn(json_encode($dto->toArray()));
-        \Phake::when($this->sendGridRequest)->get(UserApi::ENDPOINT . '/' . $command)
-            ->thenReturn($this->sendGridResponse);
+        parent::hasSendGridGetRequest($command, $content);
         $this->userApi = new UserApi($this->sendGridRequest);
     }
 
-    private function hasSendGridPatchRequest($command, $data)
+    /**
+     * @param $command
+     * @param $data
+     */
+    protected function hasSendGridPatchRequest($command, $dto, $data)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
-        \Phake::when($this->sendGridResponse)->getContent()
-            ->thenReturn(json_encode($this->validUserProfileDto->toArray()));
-        $this->assertEquals(json_encode($this->validUserProfileDto->toArray()), $this->sendGridResponse->getContent());
-        \Phake::when($this->sendGridRequest)->patch(UserApi::ENDPOINT . '/' . $command, ['body' => $data])
-            ->thenReturn($this->sendGridResponse);
+        parent::hasSendGridPatchRequest($command, $dto, $data);
         $this->userApi = new UserApi($this->sendGridRequest);
-    }
-
-    private function hasSendGridRequest()
-    {
-        $this->sendGridRequest = \Phake::mock('\iDimensionz\SendGridWebApiV3\SendGridRequest');
-    }
-
-    private function hasSendGridResponse()
-    {
-        $this->sendGridResponse = \Phake::mock('\iDimensionz\SendGridWebApiV3\SendGridResponse');
     }
 }
  

@@ -75,7 +75,10 @@ abstract class ApiEndpointAbstract
      */
     public function get($command)
     {
-        $this->setLastSendGridResponse($this->getSendGridRequest()->get($this->getEndpoint() . '/' . $command));
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
+        $this->setLastSendGridResponse($this->getSendGridRequest()->get($this->getEndpoint() . $command));
         return $this->getLastSendGridResponse()->getContent();
     }
 
@@ -89,9 +92,33 @@ abstract class ApiEndpointAbstract
         $body = [
             'body' => $data
         ];
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
         $this->setLastSendGridResponse(
-            $this->getSendGridRequest()->patch($this->getEndpoint() . '/' . $command, $body)
+            $this->getSendGridRequest()->patch($this->getEndpoint() . $command, $body)
         );
+
+        return $this->getLastSendGridResponse()->getContent();
+    }
+
+    /**
+     * @param string $command
+     * @param array $data
+     * @return string
+     */
+    public function post($command, $data)
+    {
+        $body = [
+            'body'  =>  $data
+        ];
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
+        $this->setLastSendGridResponse(
+            $this->getSendGridRequest()->post($this->getEndpoint() . $command, $body)
+        );
+
         return $this->getLastSendGridResponse()->getContent();
     }
 
