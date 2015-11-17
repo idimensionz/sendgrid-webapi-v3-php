@@ -66,7 +66,7 @@ class TemplatesApi extends SendGridApiEndpointAbstract
      */
     public function create($name)
     {
-        if (TemplateDto::MAX_LENGTH_NAME < $name) {
+        if (TemplateDto::MAX_LENGTH_NAME < strlen($name)) {
             throw new \InvalidArgumentException('Name must be ' . TemplateDto::MAX_LENGTH_NAME . ' characters or less');
         }
         $options = ['name'  =>  $name];

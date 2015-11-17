@@ -95,6 +95,20 @@ class SendGridRequest
     }
 
     /**
+     * @param string $url
+     * @param array $options
+     * @return SendGridResponse
+     */
+    public function post($url = null, $options = [])
+    {
+        $options = $this->assembleOptions($options);
+        $httpResponse = $this->getHttpClient()->post($url, $options);
+        $sendGridResponse = new SendGridResponse($httpResponse);
+
+        return $sendGridResponse;
+    }
+
+    /**
      * @param AuthenticationInterface $authentication
      */
     public function setAuthentication($authentication)

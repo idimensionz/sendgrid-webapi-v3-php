@@ -104,7 +104,28 @@ class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
         \Phake::when($this->sendGridResponse)->getContent()
             ->thenReturn($content);
         $this->assertEquals($content, $this->sendGridResponse->getContent());
-        \Phake::when($this->sendGridRequest)->patch($this->getEndPoint() . '/' . $command, ['body' => $data])
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
+        $endPoint = $this->getEndPoint();
+        $url = $endPoint . $command;
+        \Phake::when($this->sendGridRequest)->patch($url, ['body' => $data])
+            ->thenReturn($this->sendGridResponse);
+    }
+
+    protected function hasSendGridPostRequest($command, $content, $data)
+    {
+        $this->hasSendGridRequest();
+        $this->hasSendGridResponse();
+        \Phake::when($this->sendGridResponse)->getContent()
+            ->thenReturn($content);
+        $this->assertEquals($content, $this->sendGridResponse->getContent());
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
+        $endPoint = $this->getEndPoint();
+        $url = $endPoint . $command;
+        \Phake::when($this->sendGridRequest)->post($url, ['body' => $data])
             ->thenReturn($this->sendGridResponse);
     }
 }

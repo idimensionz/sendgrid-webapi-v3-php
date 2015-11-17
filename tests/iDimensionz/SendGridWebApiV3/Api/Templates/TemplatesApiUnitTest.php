@@ -95,9 +95,58 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
         $this->assertTemplateDtos($actualTemplates);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testCreateThrowsExceptionWhenNameIsTooLong()
+    {
+        $invalidName = 'This name is too long.'.
+            '3456789023456789012345678901234567890123456789012345678901234567890123456789012';
+        $this->hasSendGridPostRequest(
+            '',
+            json_encode(['templates' => [$this->validTemplateDto->toArray()]]),
+            $invalidName
+        );
+        $this->templatesApi->create($invalidName);
+    }
+
+    public function testCreateReturnsTemplateDto()
+    {
+        $validName = "Valid Template Name";
+        $this->validTemplateDto->setName($validName);
+        $this->validTemplateDto->setVersions([]);
+        /**
+         * @var TemplateDto $actualTemplateDto
+         */
+        $this->hasSendGridPostRequest(
+            '',
+            json_encode($this->validTemplateDto->toArray()),
+            ['name' => $validName]
+        );
+        $actualTemplateDto = $this->templatesApi->create($validName);
+        $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Templates\TemplateDto', $actualTemplateDto);
+        $this->assertEquals($validName, $actualTemplateDto->getName());
+        $this->assertEquals([], $actualTemplateDto->getVersions());
+    }
+
+    /**
+     * @param string $command
+     * @param string $content
+     */
     protected function hasSendGridGetRequest($command, $content)
     {
         parent::hasSendGridGetRequest($command, $content);
+        $this->templatesApi = new TemplatesApi($this->sendGridRequest);
+    }
+
+    /**
+     * @param string $command
+     * @param string $content
+     * @param mixed $data
+     */
+    protected function hasSendGridPostRequest($command, $content, $data)
+    {
+        parent::hasSendGridPostRequest($command, $content, $data);
         $this->templatesApi = new TemplatesApi($this->sendGridRequest);
     }
 
