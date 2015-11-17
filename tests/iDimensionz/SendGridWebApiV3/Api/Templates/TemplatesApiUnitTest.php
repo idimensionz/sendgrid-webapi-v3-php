@@ -28,12 +28,10 @@
 
 namespace Tests\iDimensionz\SendGridWebApiV3\Api\Templates;
 
+use Tests\iDimensionz\SendGridWebApiV3\Api\ApiUnitTestAbstract;
 use iDimensionz\SendGridWebApiV3\Api\Templates\TemplateDto;
 use iDimensionz\SendGridWebApiV3\Api\Templates\TemplatesApi;
 use iDimensionz\SendGridWebApiV3\Api\Templates\TemplateVersionDto;
-use Tests\iDimensionz\SendGridWebApiV3\Api\ApiUnitTestAbstract;
-
-require_once '../ApiUnitTestAbstract.php';
 
 class TemplatesApiUnitTest extends ApiUnitTestAbstract
 {

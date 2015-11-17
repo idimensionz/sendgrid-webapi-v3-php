@@ -33,8 +33,6 @@ use iDimensionz\SendGridWebApiV3\Api\Users\UserAccountDto;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserApi;
 use iDimensionz\SendGridWebApiV3\Api\Users\UserProfileDto;
 
-require_once '../ApiUnitTestAbstract.php';
-
 class UserApiUnitTest extends ApiUnitTestAbstract
 {
     /**

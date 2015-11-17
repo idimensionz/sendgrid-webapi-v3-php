@@ -11,11 +11,11 @@
     },
     "license": "MIT license",
     "autoload": {
-        "psr-0": {
-            "iDimensionz\\SendGridWebApiV3\\": "lib/",
-            "Tests\\iDimensionz\\SendGridWebApiV3\\": "tests/",
-            "iDimensionz\\Api\\": "lib/",
-            "Tests\\iDimensionz\\Api\\": "tests/"
+        "psr-4": {
+            "iDimensionz\\Api\\": "lib/iDimensionz/Api/",
+            "iDimensionz\\SendGridWebApiV3\\": "lib/iDimensionz/SendGridWebApiV3/",
+            "Tests\\iDimensionz\\Api\\": "tests/iDimensionz/Api/",
+            "Tests\\iDimensionz\\SendGridWebApiV3\\": "tests/iDimensionz/SendGridWebApiV3/"
         }
     },
     "authors": [

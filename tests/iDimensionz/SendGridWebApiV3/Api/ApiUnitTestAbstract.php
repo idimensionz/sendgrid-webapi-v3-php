@@ -75,7 +75,7 @@ class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $command
-     * @param $dto
+     * @param $content
      */
     protected function hasSendGridGetRequest($command, $content)
     {
@@ -94,7 +94,7 @@ class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $command
-     * @param $dto
+     * @param $content
      * @param $data
      */
     protected function hasSendGridPatchRequest($command, $content, $data)
