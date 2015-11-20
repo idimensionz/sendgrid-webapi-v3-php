@@ -42,6 +42,10 @@ class AuthenticationApiKey extends AuthenticationAbstract
      */
     public function setAuthentication($apiKey)
     {
-        $this->setOptions(self::API_KEY_PREFIX . $apiKey);
+        $this->options = [
+            'headers' => [
+                'Authorization' => self::API_KEY_PREFIX . $apiKey
+            ]
+        ];
     }
 }
