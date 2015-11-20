@@ -56,8 +56,8 @@ class AuthenticationAbstractTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->optionSetter = new TestAuthenticationOptionSetter();
-        $this->instance = new TestAuthenticationAbstract($this->optionSetter);
         $this->validAuthValue = 'SomeApiKeyValue!';
+        $this->instance = new TestAuthenticationAbstract($this->optionSetter, $this->validAuthValue);
         $this->expectedOption = ['testAuth' => $this->validAuthValue];
     }
 

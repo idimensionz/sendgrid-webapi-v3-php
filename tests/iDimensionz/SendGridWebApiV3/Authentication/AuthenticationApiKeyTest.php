@@ -37,7 +37,7 @@ class AuthenticationApiKeyTest extends \PHPUnit_Framework_TestCase
     {
         $validApiKey = 'a73jfmc93mc3ms';
         $expectedOption = ['auth' => AuthenticationApiKey::API_KEY_PREFIX . $validApiKey];
-        $authenticationApiKey = new AuthenticationApiKey(new AuthenticationOptionSetter());
+        $authenticationApiKey = new AuthenticationApiKey(new AuthenticationOptionSetter(), $validApiKey);
         $authenticationApiKey->setAuthentication($validApiKey);
         $this->assertEquals($expectedOption, $authenticationApiKey->getOptions());
     }

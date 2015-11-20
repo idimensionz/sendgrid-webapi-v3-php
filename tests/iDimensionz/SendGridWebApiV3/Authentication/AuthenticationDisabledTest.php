@@ -36,7 +36,7 @@ class AuthenticationDisabledTest extends \PHPUnit_Framework_TestCase
     public function testAuthenticationDisabled()
     {
         $expectedOption = [];
-        $authentication = new AuthenticationDisabled(new AuthenticationOptionSetter());
+        $authentication = new AuthenticationDisabled(new AuthenticationOptionSetter(), null);
         $actualOption = $authentication->getOptions();
         $this->assertEquals($expectedOption, $actualOption);
     }

@@ -50,7 +50,10 @@ class AuthenticationBasicTest extends \PHPUnit_Framework_TestCase
         $this->validUserName = 'imauser';
         $this->validPassword = 'someValidPassword';
         $this->expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword]];
-        $this->authentication = new AuthenticationBasic(new AuthenticationOptionSetter());
+        $this->authentication = new AuthenticationBasic(
+            new AuthenticationOptionSetter(),
+            ['username' => $this->validUserName, 'password' => $this->validPassword]
+        );
     }
 
     public function tearDown()

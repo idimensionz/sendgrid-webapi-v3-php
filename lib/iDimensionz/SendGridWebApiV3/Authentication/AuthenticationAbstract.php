@@ -39,10 +39,15 @@ abstract class AuthenticationAbstract implements AuthenticationInterface
      */
     protected $options;
 
-    public function __construct(AuthenticationOptionSetterInterface $authenticationOptionSetter)
+    /**
+     * @param AuthenticationOptionSetterInterface $authenticationOptionSetter
+     * @param $authenticationData
+     */
+    public function __construct(AuthenticationOptionSetterInterface $authenticationOptionSetter, $authenticationData)
     {
         $this->authenticationOptionSetter = $authenticationOptionSetter;
         $this->options = [];
+        $this->setAuthentication($authenticationData);
     }
 
     /**

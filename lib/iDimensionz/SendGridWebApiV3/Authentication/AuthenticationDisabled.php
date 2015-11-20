@@ -37,7 +37,7 @@ class AuthenticationDisabled extends AuthenticationAbstract
 {
     public function setAuthentication($authenticationData)
     {
-        $this->setOptions(null);
+        $this->options = [];
     }
 }
  

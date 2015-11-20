@@ -49,7 +49,10 @@ class AuthenticationDigestTest extends \PHPUnit_Framework_TestCase
         $this->validUserName = 'imauser';
         $this->validPassword = 'someValidPassword';
         $this->expectedAuthentication = ['auth' => [$this->validUserName, $this->validPassword, 'digest']];
-        $this->authentication = new AuthenticationDigest(new AuthenticationOptionSetter());
+        $this->authentication = new AuthenticationDigest(
+            new AuthenticationOptionSetter(),
+            ['username' => $this->validUserName, 'password' => $this->validPassword]
+        );
     }
 
     public function tearDown()
