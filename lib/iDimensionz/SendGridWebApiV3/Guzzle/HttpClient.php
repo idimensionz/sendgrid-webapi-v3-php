@@ -60,7 +60,7 @@ class HttpClient extends Client implements HttpClientInterface
     public function get($url = null, $options = [])
     {
         $guzzleResponse = parent::get($url, $options);
-        $response = $this->getHttpResponse($options, $guzzleResponse);
+        $response = $this->getHttpResponse($guzzleResponse);
 
         return $response;
     }
