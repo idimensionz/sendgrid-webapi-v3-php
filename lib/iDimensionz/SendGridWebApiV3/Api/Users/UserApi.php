@@ -73,7 +73,7 @@ class UserApi extends SendGridApiEndpointAbstract
      */
     public function getAccount()
     {
-        $accountContent = json_decode($this->get('account'), true);
+        $accountContent = $this->get('account');
         $userAccountDto = new UserAccountDto($accountContent);
 
         return $userAccountDto;

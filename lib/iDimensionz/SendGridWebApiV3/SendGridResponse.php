@@ -30,9 +30,9 @@ namespace iDimensionz\SendGridWebApiV3;
 
 class SendGridResponse
 {
-    const HEADER_RATELIMIT_LIMIT = 'X-RateLimit-Limit';
-    const HEADER_RATELIMIT_REMAINING = 'X-RateLimit-Remaining';
-    const HEADER_RATELIMIT_RESET = 'X-RateLimit-Reset';
+    const HEADER_RATELIMIT_LIMIT = 'X-Ratelimit-Limit';
+    const HEADER_RATELIMIT_REMAINING = 'X-Ratelimit-Remaining';
+    const HEADER_RATELIMIT_RESET = 'X-Ratelimit-Reset';
 
     const CONTENT_TYPE_JSON = 'application/json';
 
@@ -58,9 +58,9 @@ class SendGridResponse
         $this->setHttpResponse($httpResponse);
         $headers = $this->getHttpResponse()->getHeaders();
         $this->rateLimit = new SendGridRateLimit(
-            $headers[self::HEADER_RATELIMIT_LIMIT],
-            $headers[self::HEADER_RATELIMIT_REMAINING],
-            $headers[self::HEADER_RATELIMIT_RESET]
+            $headers[self::HEADER_RATELIMIT_LIMIT][0],
+            $headers[self::HEADER_RATELIMIT_REMAINING][0],
+            $headers[self::HEADER_RATELIMIT_RESET][0]
         );
     }
 
@@ -114,7 +114,7 @@ class SendGridResponse
     }
 
     /**
-     * @return string
+     * @return string|array
      */
     public function getContent()
     {
