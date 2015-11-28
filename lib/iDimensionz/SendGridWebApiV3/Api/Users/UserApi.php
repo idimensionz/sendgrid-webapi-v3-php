@@ -48,7 +48,7 @@ class UserApi extends SendGridApiEndpointAbstract
      */
     public function getProfile()
     {
-        $profileContent = json_decode($this->get('profile'), true);
+        $profileContent = $this->get('profile');
         $userProfileDto = new UserProfileDto($profileContent);
 
         return $userProfileDto;
@@ -62,7 +62,7 @@ class UserApi extends SendGridApiEndpointAbstract
     public function updateProfile(UserProfileDto $userProfileDto)
     {
         $changedFieldData = $userProfileDto->getUpdatedFields();
-        $profileContent = json_decode($this->patch('profile', $changedFieldData), true);
+        $profileContent = $this->patch('profile', $changedFieldData);
         $userProfileDto = new UserProfileDto($profileContent);
 
         return $userProfileDto;
