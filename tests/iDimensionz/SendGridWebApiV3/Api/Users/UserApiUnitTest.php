@@ -84,7 +84,7 @@ class UserApiUnitTest extends ApiUnitTestAbstract
 
     public function testGetProfileReturnsUserProfileDto()
     {
-        $this->hasSendGridGetRequest('profile', json_encode($this->validUserProfileDto->toArray()));
+        $this->hasSendGridGetRequest('profile', $this->validUserProfileDto->toArray());
         $actualUserProfile = $this->userApi->getProfile();
         $this->assertEquals($this->validUserProfileDto, $actualUserProfile);
     }
@@ -93,7 +93,7 @@ class UserApiUnitTest extends ApiUnitTestAbstract
     {
         $this->validUserProfileDto->setFirstName('Shesa');
         $this->validUserProfileDto->setLastName('Nuthertest');
-        $this->hasSendGridPatchRequest('profile', json_encode($this->validUserProfileDto->toArray()), $this->validUserProfileDto->getUpdatedFields());
+        $this->hasSendGridPatchRequest('profile', $this->validUserProfileDto->toArray(), $this->validUserProfileDto->getUpdatedFields());
         $actualUserProfileDto = $this->userApi->updateProfile($this->validUserProfileDto);
         // Unset the updated fields since the result profile won't have modified fields
         $this->validUserProfileDto->setUpdatedFields([]);
@@ -102,7 +102,7 @@ class UserApiUnitTest extends ApiUnitTestAbstract
 
     public function testGetAccountReturnUserAccountDto()
     {
-        $this->hasSendGridGetRequest('account', json_encode($this->validUserAccountDto->toArray()));
+        $this->hasSendGridGetRequest('account', $this->validUserAccountDto->toArray());
         $actualUserAccountDto = $this->userApi->getAccount();
         $this->assertEquals($this->validUserAccountDto, $actualUserAccountDto);
     }

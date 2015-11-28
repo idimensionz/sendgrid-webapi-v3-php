@@ -50,9 +50,9 @@ class SendGridResponseTest extends \PHPUnit_Framework_TestCase
         $this->validPaginationLink = 'This is a valid pagination link.';
         $resetTimestamp = (new \DateTime())->add(new \DateInterval('PT2H'))->getTimestamp();
         $this->validRateLimitValues = [
-            SendGridResponse::HEADER_RATELIMIT_LIMIT => 100,
-            SendGridResponse::HEADER_RATELIMIT_REMAINING => 25,
-            SendGridResponse::HEADER_RATELIMIT_RESET => $resetTimestamp
+            SendGridResponse::HEADER_RATELIMIT_LIMIT => [100],
+            SendGridResponse::HEADER_RATELIMIT_REMAINING => [25],
+            SendGridResponse::HEADER_RATELIMIT_RESET => [$resetTimestamp]
         ];
     }
 
@@ -139,16 +139,16 @@ class SendGridResponseTest extends \PHPUnit_Framework_TestCase
         $actualRateLimit = $this->sendGridResponse->getRateLimit();
         $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\SendGridRateLimit', $actualRateLimit);
         $this->assertEquals(
-            $this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_LIMIT],
+            $this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_LIMIT][0],
             $actualRateLimit->getLimit()
         );
         $this->assertEquals(
-            $this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_REMAINING],
+            $this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_REMAINING][0],
             $actualRateLimit->getRemaining()
         );
         $expectedDateTime = new \DateTime();
         $this->assertEquals(
-            $expectedDateTime->setTimestamp($this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_RESET]),
+            $expectedDateTime->setTimestamp($this->validRateLimitValues[SendGridResponse::HEADER_RATELIMIT_RESET][0]),
             $actualRateLimit->getResetDateTime()
         );
     }
@@ -174,10 +174,13 @@ class SendGridResponseTest extends \PHPUnit_Framework_TestCase
      */
     private function getValidHeaders()
     {
-        return array_merge($this->validRateLimitValues, [
-            'Content-Type' => SendGridResponse::CONTENT_TYPE_JSON,
-            'Link' => $this->validPaginationLink
-        ]);
+        return array_merge(
+            $this->validRateLimitValues,
+            [
+                'Content-Type' => SendGridResponse::CONTENT_TYPE_JSON,
+                'Link' => $this->validPaginationLink
+            ]
+        );
     }
 }
  
