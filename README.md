@@ -3,4 +3,4 @@
 PHP implementation of the SendGrid WebAPI v3
 
 ##Examples
-Grab the [examples repo](https://github.com/idimensionz/sendgrid-webapi-v3-examples) to see and run actual code
+Grab the [examples repo](https://github.com/idimensionz/sendgrid-webapi-v3-examples) to see and run actual API calls.
