@@ -29,6 +29,7 @@
 namespace iDimensionz\SendGridWebApiV3\Guzzle;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 use iDimensionz\SendGridWebApiV3\HttpClientInterface;
 
 /**
@@ -49,6 +50,56 @@ class HttpClient extends Client implements HttpClientInterface
     public function setDefaultHeaders(array $headers)
     {
         $this->setDefaultOption('headers', $headers);
+    }
+
+    /**
+     * @param string $url
+     * @param array $options
+     * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|\GuzzleHttp\Ring\Future\FutureInterface|HttpResponse|\iDimensionz\SendGridWebApiV3\HttpResponseInterface|null
+     */
+    public function get($url = null, $options = [])
+    {
+        $guzzleResponse = parent::get($url, $options);
+        $response = $this->getHttpResponse($options, $guzzleResponse);
+
+        return $response;
+    }
+
+    /**
+     * @param Response $guzzleResponse
+     * @return mixed
+     */
+    private function getResponseOptions($guzzleResponse)
+    {
+        $options = [];
+        $reasonPhrase = $guzzleResponse->getReasonPhrase();
+        if (!empty($reasonPhrase)) {
+            $options['reason_phrase'] = $reasonPhrase;
+        }
+        $protocolVersion = $guzzleResponse->getProtocolVersion();
+        if (!empty($protocolVersion)) {
+            $options['protocol_version'] = $protocolVersion;
+            return $options;
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param Response $guzzleResponse
+     * @return HttpResponse
+     */
+    private function getHttpResponse($guzzleResponse)
+    {
+        $options = $this->getResponseOptions($guzzleResponse);
+        $response = new HttpResponse(
+            $guzzleResponse->getStatusCode(),
+            $guzzleResponse->getHeaders(),
+            $guzzleResponse->getBody(),
+            $options
+        );
+
+        return $response;
     }
 }
  
