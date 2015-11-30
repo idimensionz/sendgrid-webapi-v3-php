@@ -123,6 +123,23 @@ abstract class ApiEndpointAbstract
     }
 
     /**
+     * @param $command
+     * @return array|string
+     */
+    public function delete($command)
+    {
+        if (!empty($command)) {
+            $command = "/{$command}";
+        }
+        $this->setLastSendGridResponse(
+            $this->getSendGridRequest()->delete($this->getEndpoint() . $command)
+        );
+
+        return $this->getLastSendGridResponse()->getContent();
+
+    }
+
+    /**
      * @return SendGridResponse
      */
     protected function getLastSendGridResponse()

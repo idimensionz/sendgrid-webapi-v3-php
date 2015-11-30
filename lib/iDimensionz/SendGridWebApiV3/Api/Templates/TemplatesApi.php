@@ -47,16 +47,16 @@ class TemplatesApi extends SendGridApiEndpointAbstract
      * @return TemplateDto[]
      * @see https://sendgrid.com/docs/API_Reference/Web_API_v3/Template_Engine/templates.html#-GET
      */
-    public function getAll()
+    public function getAllTemplates()
     {
-        $result = json_decode($this->get(''), true);
+        $result = $this->get('');
         $templatesData = $result['templates'];
-        $templates = [];
+        $templateDtos = [];
         foreach ($templatesData as $templateData) {
-            $templates[] = new TemplateDto($templateData);
+            $templateDtos[] = new TemplateDto($templateData);
         }
 
-        return $templates;
+        return $templateDtos;
     }
 
     /**
@@ -64,16 +64,55 @@ class TemplatesApi extends SendGridApiEndpointAbstract
      * @return TemplateDto
      * @throws \InvalidArgumentException
      */
-    public function create($name)
+    public function createTemplate($name)
     {
         if (TemplateDto::MAX_LENGTH_NAME < strlen($name)) {
             throw new \InvalidArgumentException('Name must be ' . TemplateDto::MAX_LENGTH_NAME . ' characters or less');
         }
         $options = ['name'  =>  $name];
-        $templateData = json_decode($this->post('', $options), true);
-        $template = new TemplateDto($templateData);
+        $templateData = $this->post('', $options);
+        $templateDto = new TemplateDto($templateData);
 
-        return $template;
+        return $templateDto;
+    }
+
+    /**
+     * @param string $templateId UUID of template to retrieve
+     * @return TemplateDto
+     */
+    public function getTemplate($templateId)
+    {
+        $templateData = $this->get("/{$templateId}");
+        $templateDto = new TemplateDto($templateData);
+
+        return $templateDto;
+    }
+
+    /**
+     * @param string $templateId UUID of template to update
+     * @param string $newName
+     * @return TemplateDto
+     */
+    public function updateTemplate($templateId, $newName)
+    {
+        if (TemplateDto::MAX_LENGTH_NAME < strlen($newName)) {
+            throw new \InvalidArgumentException('Name must be ' . TemplateDto::MAX_LENGTH_NAME . ' characters or less');
+        }
+        $options = ['name' => $newName];
+        $templateData = $this->patch("/{$templateId}", $options);
+        $templateDto = new TemplateDto($templateData);
+
+        return $templateDto;
+    }
+
+    /**
+     * @param string $templateId UUID of the template to delete
+     * @return bool  Returns true if the template was deleted. False otherwise.
+     */
+    public function deleteTemplate($templateId)
+    {
+        $this->delete("/{$templateId}");
+        return (bool)(204 == $this->getLastSendGridResponse()->getStatusCode());
     }
 }
  

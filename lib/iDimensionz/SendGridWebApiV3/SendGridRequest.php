@@ -109,6 +109,20 @@ class SendGridRequest
     }
 
     /**
+     * @param null $url
+     * @param array $options
+     * @return SendGridResponse
+     */
+    public function delete($url = null, $options = [])
+    {
+        $options = $this->assembleOptions($options);
+        $httpResponse = $this->getHttpClient()->delete($url, $options);
+        $sendGridResponse = new SendGridResponse($httpResponse);
+
+        return $sendGridResponse;
+    }
+
+    /**
      * @param AuthenticationInterface $authentication
      */
     public function setAuthentication($authentication)

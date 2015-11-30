@@ -122,6 +122,15 @@ class SendGridResponse
 
         return $content;
     }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return $this->getHttpResponse()->getStatusCode();
+    }
+
     /**
      * @return HttpResponseInterface
      */
