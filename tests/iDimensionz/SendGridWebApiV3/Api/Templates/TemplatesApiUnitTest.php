@@ -90,8 +90,8 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
 
     public function testGetAllReturnsAllTemplates()
     {
-        $this->hasSendGridGetRequest('', json_encode(['templates' => [$this->validTemplateDto->toArray()]]));
-        $actualTemplates = $this->templatesApi->getAll();
+        $this->hasSendGridGetRequest('', ['templates' => [$this->validTemplateDto->toArray()]]);
+        $actualTemplates = $this->templatesApi->getAllTemplates();
         $this->assertTemplateDtos($actualTemplates);
     }
 
@@ -107,7 +107,7 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
             json_encode(['templates' => [$this->validTemplateDto->toArray()]]),
             $invalidName
         );
-        $this->templatesApi->create($invalidName);
+        $this->templatesApi->createTemplate($invalidName);
     }
 
     public function testCreateReturnsTemplateDto()
@@ -120,10 +120,10 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
          */
         $this->hasSendGridPostRequest(
             '',
-            json_encode($this->validTemplateDto->toArray()),
+            $this->validTemplateDto->toArray(),
             ['name' => $validName]
         );
-        $actualTemplateDto = $this->templatesApi->create($validName);
+        $actualTemplateDto = $this->templatesApi->createTemplate($validName);
         $this->assertInstanceOf('\iDimensionz\SendGridWebApiV3\Api\Templates\TemplateDto', $actualTemplateDto);
         $this->assertEquals($validName, $actualTemplateDto->getName());
         $this->assertEquals([], $actualTemplateDto->getVersions());
