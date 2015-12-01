@@ -29,7 +29,7 @@
 namespace iDimensionz\SendGridWebApiV3\Guzzle;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Message\ResponseInterface;
 use iDimensionz\SendGridWebApiV3\HttpClientInterface;
 
 /**
@@ -66,10 +66,10 @@ class HttpClient extends Client implements HttpClientInterface
     }
 
     /**
-     * @param Response $guzzleResponse
+     * @param ResponseInterface $guzzleResponse
      * @return mixed
      */
-    private function getResponseOptions($guzzleResponse)
+    protected function getResponseOptions($guzzleResponse)
     {
         $options = [];
         $reasonPhrase = $guzzleResponse->getReasonPhrase();
@@ -86,10 +86,10 @@ class HttpClient extends Client implements HttpClientInterface
     }
 
     /**
-     * @param Response $guzzleResponse
+     * @param ResponseInterface $guzzleResponse
      * @return HttpResponse
      */
-    private function getHttpResponse($guzzleResponse)
+    protected function getHttpResponse($guzzleResponse)
     {
         $options = $this->getResponseOptions($guzzleResponse);
         $response = new HttpResponse(
