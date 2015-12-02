@@ -129,6 +129,53 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
         $this->assertEquals([], $actualTemplateDto->getVersions());
     }
 
+    public function testGetTemplateReturnsTemplateDto()
+    {
+        $this->hasSendGridGetRequest("/{$this->validId}", $this->validTemplateDto->toArray());
+        $actualTemplate = $this->templatesApi->getTemplate($this->validId);
+        $this->assertEquals($this->validTemplateDto, $actualTemplate);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testUpdateTemplateThrowsInvalidArgumentExceptionWhenNameTooLong()
+    {
+        $invalidName = str_repeat('0123456789', 31);
+        $this->hasSendGridPatchRequest(
+            "/{$this->validId}",
+            $this->validTemplateDto->toArray(),
+            ['name' => $invalidName]
+        );
+        $this->templatesApi->updateTemplate($this->validId, $invalidName);
+        $this->fail('Exception not thrown');
+    }
+
+    public function testUpdateTemplateReturnsTemplateDto()
+    {
+        $this->hasSendGridPatchRequest(
+            "/{$this->validId}",
+            $this->validTemplateDto->toArray(),
+            ['name' => $this->validName]
+        );
+        $actualTemplateDto = $this->templatesApi->updateTemplate($this->validId, $this->validName);
+        $this->assertEquals($this->validTemplateDto, $actualTemplateDto);
+    }
+
+    public function testDeleteTemplateReturnsTrueWhenTemplateIsDeleted()
+    {
+        $this->hasSendGridDeleteRequest("/{$this->validId}", 204);
+        $isDeleted = $this->templatesApi->deleteTemplate($this->validId);
+        $this->assertTrue($isDeleted);
+    }
+
+    public function testDeletedTemplateReturnsFalseWhenTemplateNotDeleted()
+    {
+        $this->hasSendGridDeleteRequest("/{$this->validId}", 400);
+        $isDeleted = $this->templatesApi->deleteTemplate($this->validId);
+        $this->assertFalse($isDeleted);
+    }
+
     /**
      * @param string $command
      * @param string $content
@@ -147,6 +194,27 @@ class TemplatesApiUnitTest extends ApiUnitTestAbstract
     protected function hasSendGridPostRequest($command, $content, $data)
     {
         parent::hasSendGridPostRequest($command, $content, $data);
+        $this->templatesApi = new TemplatesApi($this->sendGridRequest);
+    }
+
+    /**
+     * @param string $command
+     * @param string $content
+     * @param mixed $data
+     */
+    protected function hasSendGridPatchRequest($command, $content, $data)
+    {
+        parent::hasSendGridPatchRequest($command, $content, $data);
+        $this->templatesApi = new TemplatesApi($this->sendGridRequest);
+    }
+
+    /**
+     * @param string $command
+     * @param int $statusCode
+     */
+    protected function hasSendGridDeleteRequest($command, $statusCode)
+    {
+        parent::hasSendGridDeleteRequest($command, $statusCode);
         $this->templatesApi = new TemplatesApi($this->sendGridRequest);
     }
 
