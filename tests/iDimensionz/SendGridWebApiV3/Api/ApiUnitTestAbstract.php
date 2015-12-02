@@ -82,15 +82,9 @@ abstract class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
      */
     protected function hasSendGridGetRequest($command, $content)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
+        $url = $this->commonSetup($command);
         \Phake::when($this->sendGridResponse)->getContent()
             ->thenReturn($content);
-        if (!empty($command)) {
-            $command = "/{$command}";
-        }
-        $endPoint = $this->getEndPoint();
-        $url = $endPoint . $command;
         \Phake::when($this->sendGridRequest)->get($url)
             ->thenReturn($this->sendGridResponse);
     }
@@ -102,16 +96,10 @@ abstract class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
      */
     protected function hasSendGridPatchRequest($command, $content, $data)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
+        $url = $this->commonSetup($command);
         \Phake::when($this->sendGridResponse)->getContent()
             ->thenReturn($content);
         $this->assertEquals($content, $this->sendGridResponse->getContent());
-        if (!empty($command)) {
-            $command = "/{$command}";
-        }
-        $endPoint = $this->getEndPoint();
-        $url = $endPoint . $command;
         \Phake::when($this->sendGridRequest)->patch($url, ['body' => $data])
             ->thenReturn($this->sendGridResponse);
     }
@@ -123,16 +111,10 @@ abstract class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
      */
     protected function hasSendGridPostRequest($command, $content, $data)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
+        $url = $this->commonSetup($command);
         \Phake::when($this->sendGridResponse)->getContent()
             ->thenReturn($content);
         $this->assertEquals($content, $this->sendGridResponse->getContent());
-        if (!empty($command)) {
-            $command = "/{$command}";
-        }
-        $endPoint = $this->getEndPoint();
-        $url = $endPoint . $command;
         \Phake::when($this->sendGridRequest)->post($url, ['body' => $data])
             ->thenReturn($this->sendGridResponse);
     }
@@ -143,16 +125,26 @@ abstract class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
      */
     protected function hasSendGridDeleteRequest($command, $statusCode)
     {
-        $this->hasSendGridRequest();
-        $this->hasSendGridResponse();
+        $url = $this->commonSetup($command);
         \Phake::when($this->sendGridResponse)->getStatusCode()
             ->thenReturn($statusCode);
+        \Phake::when($this->sendGridRequest)->delete($url)
+            ->thenReturn($this->sendGridResponse);
+    }
+
+    /**
+     * @param $command
+     * @return string
+     */
+    protected function commonSetup($command)
+    {
+        $this->hasSendGridRequest();
+        $this->hasSendGridResponse();
         if (!empty($command)) {
             $command = "/{$command}";
         }
         $endPoint = $this->getEndPoint();
         $url = $endPoint . $command;
-        \Phake::when($this->sendGridRequest)->delete($url)
-            ->thenReturn($this->sendGridResponse);
+        return $url;
     }
 }
