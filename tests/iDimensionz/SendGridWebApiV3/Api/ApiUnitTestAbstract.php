@@ -28,6 +28,9 @@
 
 namespace Tests\iDimensionz\SendGridWebApiV3\Api;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ApiUnitTestAbstract extends \PHPUnit_Framework_TestCase
 {
     protected $sendGridRequest;
