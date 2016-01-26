@@ -4,6 +4,8 @@
 iDimensionz's PHP client for the SendGrid WebAPI v3.
 [SendGrid's official documentation](https://sendgrid.com/docs/API_Reference/Web_API_v3/index.html) for their Web API v3.
 
+Join our free HipChat chat room to ask or answer questions related to this API client at https://www.hipchat.com/gFqa8nAS0 .
+
 ##Installation
 Easy way to install this package is via composer:
 
