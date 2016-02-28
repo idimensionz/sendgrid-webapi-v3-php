@@ -71,7 +71,7 @@ abstract class ApiEndpointAbstract
 
     /**
      * @param string $command
-     * @return string
+     * @return array|string
      */
     public function get($command)
     {
