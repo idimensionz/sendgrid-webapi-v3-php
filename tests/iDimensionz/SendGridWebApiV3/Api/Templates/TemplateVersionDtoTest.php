@@ -101,39 +101,6 @@ class TemplateVersionDtoTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testConstructThrowsExceptionWhenDataDoesNotContainHtmlContent()
-    {
-        $this->hasValidTemplateVersionData();
-        $invalidTemplateVersionData = $this->validTemplateVersionData;
-        unset($invalidTemplateVersionData['html_content']);
-        $this->hasTemplateVersionDto($invalidTemplateVersionData);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testConstructThrowsExceptionWhenDataDoesNotContainPlainContent()
-    {
-        $this->hasValidTemplateVersionData();
-        $invalidTemplateVersionData = $this->validTemplateVersionData;
-        unset($invalidTemplateVersionData['plain_content']);
-        $this->hasTemplateVersionDto($invalidTemplateVersionData);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testConstructThrowsExceptionWhenDataDoesNotContainSubject()
-    {
-        $this->hasValidTemplateVersionData();
-        $invalidTemplateVersionData = $this->validTemplateVersionData;
-        unset($invalidTemplateVersionData['subject']);
-        $this->hasTemplateVersionDto($invalidTemplateVersionData);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructThrowsExceptionWhenDataDoesNotContainUpdatedAt()
     {
         $this->hasValidTemplateVersionData();
@@ -145,6 +112,32 @@ class TemplateVersionDtoTest extends \PHPUnit_Framework_TestCase
     public function testConstructWithEmptyArrayDoesNotSetAnyValues()
     {
         $this->hasTemplateVersionDto();
+    }
+
+    public function testConstructSetsSubjectHtmlContentAndPlainContentWhenSupplied()
+    {
+        $this->hasTemplateVersionDto();
+        $this->assertEquals($this->validTemplateVersionData['subject'], $this->templateVersionDto->getSubject());
+        $this->assertEquals(
+            $this->validTemplateVersionData['html_content'],
+            $this->templateVersionDto->getHtmlContent()
+        );
+        $this->assertEquals(
+            $this->validTemplateVersionData['plain_content'],
+            $this->templateVersionDto->getPlainContent()
+        );
+    }
+
+    public function testConstructDoesNotSetSubjectHtmlContentAndPlainContentWhenNotSupplied()
+    {
+        $this->hasValidTemplateVersionData();
+        unset($this->validTemplateVersionData['subject']);
+        unset($this->validTemplateVersionData['html_content']);
+        unset($this->validTemplateVersionData['plain_content']);
+        $this->hasTemplateVersionDto($this->validTemplateVersionData);
+        $this->assertNull($this->templateVersionDto->getSubject());
+        $this->assertNull($this->templateVersionDto->getHtmlContent());
+        $this->assertNull($this->templateVersionDto->getPlainContent());
     }
 
     /**

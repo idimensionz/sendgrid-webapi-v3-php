@@ -80,9 +80,15 @@ class TemplateVersionDto implements DtoInterface
             $this->setTemplateId($templateVersionData['template_id']);
             $this->setActive(1 === (int) $templateVersionData['active']);
             $this->setName($templateVersionData['name']);
-            $this->setSubject($templateVersionData['subject']);
-            $this->setHtmlContent($templateVersionData['html_content']);
-            $this->setPlainContent($templateVersionData['plain_content']);
+            if (array_key_exists('subject', $templateVersionData)) {
+                $this->setSubject($templateVersionData['subject']);
+            }
+            if (array_key_exists('html_content', $templateVersionData)) {
+                $this->setHtmlContent($templateVersionData['html_content']);
+            }
+            if (array_key_exists('plain_content', $templateVersionData)) {
+                $this->setPlainContent($templateVersionData['plain_content']);
+            }
             $this->setUpdatedAt(new \DateTime($templateVersionData['updated_at']));
         }
     }
@@ -270,9 +276,6 @@ class TemplateVersionDto implements DtoInterface
                 in_array('template_id', $keys) &&
                 in_array('active', $keys) &&
                 in_array('name', $keys) &&
-                in_array('html_content', $keys) &&
-                in_array('plain_content', $keys) &&
-                in_array('subject', $keys) &&
                 in_array('updated_at', $keys);
         }
 
