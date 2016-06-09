@@ -30,6 +30,9 @@ namespace iDimensionz\SendGridWebApiV3\Api\Mail;
 
 class AttachmentDto
 {
+    const DISPOSITION_INLINE = 'inline';
+    const DISPOSITION_ATTACHMENT = 'attachment';
+
     /**
      * @var string
      */
@@ -50,6 +53,10 @@ class AttachmentDto
      * @var string
      */
     private $contentId;
+    /**
+     * @var array
+     */
+    private $validDispositions;
 
     public function __construct($content, $filename, $type=null, $disposition=null, $contentId=null)
     {
@@ -73,6 +80,7 @@ class AttachmentDto
      */
     public function setContent($content)
     {
+        // @todo Content must be base64 encoded. Automatically do this from filename?
         $this->content = $content;
     }
 
@@ -121,7 +129,17 @@ class AttachmentDto
      */
     public function setDisposition($disposition)
     {
+        if (!$this->isValidDisposition($disposition)) {
+            $exceptionMessage = "Disposition '{$disposition}' invalid. Must be one of " .
+                implode(', ', $this->getValidDispositions());
+            throw new \InvalidArgumentException($exceptionMessage);
+        }
         $this->disposition = $disposition;
+        // Inline dispositions need an id
+        if ($this->isDispositionInline() && empty($this->getContentId())) {
+            $someUniqueId = time();
+            $this->setContentId($someUniqueId);
+        }
     }
 
     /**
@@ -140,5 +158,44 @@ class AttachmentDto
         $this->contentId = $contentId;
     }
 
+    /**
+     * @return array
+     */
+    public function getValidDispositions()
+    {
+        if (empty($this->validDispositions)) {
+            $this->validDispositions = [
+                self::DISPOSITION_INLINE,
+                self::DISPOSITION_ATTACHMENT
+            ];
+        }
 
+        return $this->validDispositions;
+    }
+
+    /**
+     * Determines if a disposition is valid
+     * @param string $disposition
+     * @return bool
+     */
+    public function isValidDisposition($disposition)
+    {
+        return (bool) in_array($disposition, $this->validDispositions);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDispositionInline()
+    {
+        return (bool) self::DISPOSITION_INLINE == $this->getDisposition();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDispositionAttachment()
+    {
+        return (bool) self::DISPOSITION_ATTACHMENT == $this->getDisposition();
+    }
 }
