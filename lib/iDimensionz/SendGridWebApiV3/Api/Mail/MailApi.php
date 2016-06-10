@@ -28,7 +28,9 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Mail;
 
-class MailApi
+use iDimensionz\SendGridWebApiV3\Api\SendGridApiEndpointAbstract;
+
+class MailApi extends SendGridApiEndpointAbstract
 {
     /**
      * @var PersonalizationDto[]
@@ -116,6 +118,25 @@ class MailApi
      */
     private $isBeta = true;
 
+    public function __construct()
+    {
+        $this->personalizations = [];
+        $this->attachments = [];
+        $this->sections = [];
+        $this->headers = [];
+        $this->categories = [];
+        $this->content = [];
+        $this->type = [];
+    }
+
+    public function addTo($emailAddress, $name=null)
+    {
+        $to = new EmailAddressDto($emailAddress, $name);
+        $personalizationDto = new PersonalizationDto();
+        $personalizationDto->setTo($to);
+        $this->setPersonalizations([$personalizationDto]);
+    }
+
     public function send()
     {
         //@todo flesh out this function
@@ -146,11 +167,12 @@ class MailApi
     }
 
     /**
-     * @param EmailAddressDto $from
+     * @param string $emailAddress
+     * @param string|null $name
      */
-    public function setFrom($from)
+    public function setFrom($emailAddress, $name=null)
     {
-        $this->from = $from;
+        $this->from = new EmailAddressDto($emailAddress, $name);
     }
 
     /**
@@ -162,11 +184,12 @@ class MailApi
     }
 
     /**
-     * @param EmailAddressDto $replyTo
+     * @param string $emailAddress
+     * @param string|null $name
      */
-    public function setReplyTo($replyTo)
+    public function setReplyTo($emailAddress, $name=null)
     {
-        $this->replyTo = $replyTo;
+        $this->replyTo = new EmailAddressDto($emailAddress, $name);
     }
 
     /**
@@ -199,6 +222,22 @@ class MailApi
     public function setContent($content)
     {
         $this->content = $content;
+    }
+
+    /**
+     * @param string $html
+     */
+    public function addHtmlContent($html)
+    {
+        $this->content[1] = ['type'=>'html', 'value'=>$html];
+    }
+
+    /**
+     * @param string $text
+     */
+    public function addTextContent($text)
+    {
+        $this->content[0] = ['type'=>'text', 'value'=>$text];
     }
 
     /**
