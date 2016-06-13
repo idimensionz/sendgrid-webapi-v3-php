@@ -50,9 +50,12 @@ class MailApi extends SendGridApiEndpointAbstract
         $this->isBeta = true;
     }
 
+    /**
+     * @param MailDto $mailDto
+     * @return bool
+     */
     public function isReadyToSend(MailDto $mailDto)
     {
-        // @todo add validation functionality here
         $isReady = true;
         // Check personalizations.
         $personalizationCount = count($mailDto->getPersonalizations());
@@ -85,14 +88,18 @@ class MailApi extends SendGridApiEndpointAbstract
 
     /**
      * @param MailDto $mailDto
+     * @return string
      */
     public function send(MailDto $mailDto)
     {
+        $result = '';
         if ($this->isReadyToSend($mailDto)) {
             $command = '/send' . ($this->isBeta() ? '/beta' : '');
             $data = $mailDto->toArray();
-            $this->post($command, $data);
+            $result = $this->post($command, $data);
         }
+
+        return $result;
     }
 
     /**

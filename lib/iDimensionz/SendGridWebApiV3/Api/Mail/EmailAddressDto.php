@@ -77,7 +77,7 @@ class EmailAddressDto
      */
     public function setName($name)
     {
-        if (!is_string($name)) {
+        if (!is_null($name) && !is_string($name)) {
             throw new \InvalidArgumentException('Name must be a string');
         }
         $this->name = $name;
