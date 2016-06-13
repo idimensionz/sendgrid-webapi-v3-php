@@ -1,7 +1,7 @@
 <?php
 /*
  * iDimensionz/{sendgrid-webapi-v3}
- * TrackSettingsDto.php
+ * AsmDto.php
  *  
  * The MIT License (MIT)
  * 
@@ -28,15 +28,71 @@
 
 namespace iDimensionz\SendGridWebApiV3\Api\Mail;
 
-
-class TrackSettingsDto
+class AsmDto
 {
-    // @todo Flesh out this class
+    /**
+     * @var int
+     */
+    private $groupId;
+    /**
+     * @var int[]
+     */
+    private $displayGroups;
 
+    /**
+     * @param int $groupId
+     * @param int[]|null $displayGroups
+     */
+    public function __construct($groupId, $displayGroups = null)
+    {
+        $this->setGroupId($groupId);
+        $this->setDisplayGroups($displayGroups);
+    }
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $output = [];
+        $output = [
+            'group_id'          => $this->getGroupId(),
+        ];
+        if (!empty($this->getDisplayGroups())) {
+            $output['groups_to_display'] = $this->getDisplayGroups();
+        }
 
         return $output;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
+
+    /**
+     * @param int $groupId
+     */
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getDisplayGroups()
+    {
+        return $this->displayGroups;
+    }
+
+    /**
+     * @param int[] $displayGroups
+     */
+    public function setDisplayGroups($displayGroups)
+    {
+        $this->displayGroups = $displayGroups;
     }
 }

@@ -198,4 +198,16 @@ class AttachmentDto
     {
         return (bool) self::DISPOSITION_ATTACHMENT == $this->getDisposition();
     }
+
+    public function toArray()
+    {
+        $output = [];
+        $output['content'] = $this->getContent();
+        $output['type'] = $this->getType();
+        $output['filename'] = $this->getFilename();
+        $output['disposition'] = $this->getDisposition();
+        $output['content_id'] = $this->getContentId();
+
+        return $output;
+    }
 }

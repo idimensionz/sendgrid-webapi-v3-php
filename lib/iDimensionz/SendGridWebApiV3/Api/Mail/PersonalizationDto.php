@@ -30,6 +30,8 @@ namespace iDimensionz\SendGridWebApiV3\Api\Mail;
 
 class PersonalizationDto
 {
+    const DATE_FORMAT = 'Y-m-d';
+
     /**
      * @var EmailAddressDto[]
      */
@@ -206,7 +208,14 @@ class PersonalizationDto
     {
         $output = [];
         // @todo implement this function.
-
+        $output['to'] = $this->getTo()->toArray();
+        $output['cc'] = $this->getCc()->toArray();
+        $output['bcc'] = $this->getBcc()->toArray();
+        $output['subject'] = $this->getSubject();
+        $output['headers'] = $this->getHeaders();
+        $output['substitutions'] = $this->getSubstitutions();
+        $output['custom_args'] = $this->getCustomArguments();
+        $output['send_at'] = $this->getSendAt()->format(self::DATE_FORMAT);
         return $output;
     }
 }

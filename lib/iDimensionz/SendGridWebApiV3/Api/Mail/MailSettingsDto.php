@@ -230,4 +230,44 @@ class MailSettingsDto
     {
         $this->spamCheckPostToUrl = $spamCheckPostToUrl;
     }
+
+    public function toArray()
+    {
+        $output = [];
+        if (!empty($this->getBccEmailAddress()) && !empty($this->isBccEnabled())) {
+            $output['bcc'] = [
+                'enable'    =>  $this->isBccEnabled(),
+                'email'     =>  $this->getBccEmailAddress(),
+            ];
+        }
+        if (!empty($this->isBypassListManagement())) {
+            $output['bypass_list_management'] = [
+                'enable'    =>  $this->isBypassListManagement()
+            ];
+        }
+        if (!empty($this->isFooterEnabled()) && !empty($this->getFooterText()) && !empty($this->getFooterHtml())) {
+            $output['footer'] = [
+                'enable'    =>  $this->isFooterEnabled(),
+                'text'      =>  $this->getFooterText(),
+                'html'      =>  $this->getFooterHtml()
+            ];
+        }
+        if (!empty($this->isSandboxModeEnabled())) {
+            $output['sandbox_mode'] = [
+                'enable'    =>  $this->isSandboxModeEnabled()
+            ];
+        }
+        if (!empty($this->isSpamCheckEnabled())
+            && !empty($this->getSpamCheckThreshold())
+            && !empty($this->getSpamCheckPostToUrl())
+        ) {
+            $output['spam_check'] = [
+                'enable'        =>  $this->isSpamCheckEnabled(),
+                'threshold'     =>  $this->getSpamCheckThreshold(),
+                'post_to_url'   =>  $this->getSpamCheckPostToUrl()
+            ];
+        }
+
+        return $output;
+    }
 }
