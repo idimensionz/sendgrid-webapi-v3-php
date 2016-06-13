@@ -65,22 +65,32 @@ class MailApi extends SendGridApiEndpointAbstract
                 // check "to" for each personalization
                 $isReady = $isReady && count($personalization->getTo()) > 0;
             }
+        } else {
+            echo 'Personalizations needed';
         }
         if ($isReady) {
             // Check subject
             $isReady = $isReady && !empty($mailDto->getSubject());
+        } else {
+            echo 'Subject empty' . PHP_EOL;
         }
         if ($isReady) {
             // Check content
             $isReady = $isReady && count($mailDto->getContent()) > 0;
+        } else {
+            echo 'No Content' . PHP_EOL;
         }
         if ($isReady) {
             // Check type
             $isReady = $isReady && strlen($mailDto->getType()) > 0;
+        } else {
+            echo 'No type' . PHP_EOL;
         }
         if ($isReady) {
             // Check value
             $isReady = $isReady && strlen($mailDto->getValue()) > 0;
+        } else {
+            echo 'No value' . PHP_EOL;
         }
 
         return $isReady;
