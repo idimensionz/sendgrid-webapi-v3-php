@@ -95,9 +95,12 @@ class MailApi extends SendGridApiEndpointAbstract
         $result = '';
         if ($this->isReadyToSend($mailDto)) {
             $command = 'send' . ($this->isBeta() ? '/beta' : '');
+var_dump(__METHOD__.'/Command: '.$command);
             $data = $mailDto->toArray();
-var_dump($data);
+var_dump(__METHOD__.'/data: '.$data);
             $result = $this->post($command, $data);
+        } else {
+            $result = "Not ready to send";
         }
 
         return $result;
