@@ -2,7 +2,7 @@
     "name": "idimensionz/sendgrid-webapi-v3",
     "description": "PHP implementation of the SendGrid WebAPI v3",
     "require": {
-        "guzzlehttp/guzzle": "5.3.x-dev"
+        "guzzlehttp/guzzle": "6.5.6"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
