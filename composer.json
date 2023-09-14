@@ -6,7 +6,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
-        "codeclimate/php-test-reporter": "dev-master",
         "phake/phake": "2.1.x-dev"
     },
     "license": "MIT",
